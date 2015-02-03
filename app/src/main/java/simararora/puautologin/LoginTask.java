@@ -22,12 +22,6 @@ public class LoginTask extends AsyncTask<String, String, Void> {
     }
 
     @Override
-    protected void onPreExecute() {
-        super.onPreExecute();
-        Toast.makeText(context, "Logging In", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
     protected Void doInBackground(String... params) {
         String urlParameters = "user=" + params[0] + "&password=" + params[1];
         HttpURLConnection connection = null;

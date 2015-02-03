@@ -12,27 +12,16 @@ import android.util.Log;
 /**
  * Created by Simar Arora on 2/3/2015.
  */
+
 public class WifiConnectedReceiver extends BroadcastReceiver {
     private Context context;
     private WifiManager wifiManager;
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.d("Simar", "Received");
         if (!isUsernamePasswordInitialised())
             return;
-        Log.d("Simar", "Initialised");
         this.context = context;
-//        Log.d("Simar", "Equal");
-//        NetworkInfo networkInfo = intent.getParcelableExtra(WifiManager.EXTRA_NETWORK_INFO);
-//        if (networkInfo != null
-//                && NetworkInfo.State.CONNECTED.equals(networkInfo.getState())) {
-//            if (canLogin()) {
-//                Log.d("Simar", "Can Login");
-//                startLoginTask();
-//            } else
-//                Log.d("Simar", "Can't Login");
-//        }
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         if ((networkInfo != null) && (networkInfo.getType() == ConnectivityManager.TYPE_WIFI) && (networkInfo.getState().equals(NetworkInfo.State.CONNECTED))) {
@@ -64,7 +53,7 @@ public class WifiConnectedReceiver extends BroadcastReceiver {
     }
 
     private String getPasswordFromSharedPreferences() {
-        return "Boobs@123 ";
+        return "Boobs@123";
     }
 
     private boolean isUsernamePasswordInitialised() {
