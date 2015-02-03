@@ -17,5 +17,17 @@ public class MainActivity extends ActionBarActivity {
                 new LogoutTask(MainActivity.this).execute();
             }
         });
+        findViewById(R.id.button2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new LoginTask(MainActivity.this).execute("abh1121662", "Boobs@123");
+            }
+        });
+        findViewById(R.id.button3).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new ChangePasswordTask().execute();
+            }
+        });
     }
 }
