@@ -14,7 +14,7 @@ public class MainActivity extends ActionBarActivity {
         findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new LoginTask(MainActivity.this).execute();
+                new LogoutTask(MainActivity.this).execute();
             }
         });
     }
