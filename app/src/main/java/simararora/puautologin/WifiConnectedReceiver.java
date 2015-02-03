@@ -51,11 +51,11 @@ public class WifiConnectedReceiver extends BroadcastReceiver{
     }
 
     private String getUserNameFromSharedPreferences(){
-        return "";
+        return "abh1121662";
     }
 
     private String getPasswordFromSharedPreferences(){
-        return "";
+        return "Boobs@123 ";
     }
 
     private boolean isUsernamePasswordInitialised(){
