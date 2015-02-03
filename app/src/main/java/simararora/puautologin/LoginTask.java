@@ -97,6 +97,6 @@ public class LoginTask extends AsyncTask<String, String, Void> {
     @Override
     protected void onProgressUpdate(String... values) {
         super.onProgressUpdate(values);
-        Toast.makeText(context, values[0], Toast.LENGTH_SHORT);
+        Toast.makeText(context, values[0], Toast.LENGTH_SHORT).show();
     }
 }
