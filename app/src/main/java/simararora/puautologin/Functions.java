@@ -14,7 +14,11 @@ public class Functions {
     private static final String PREFERENCES_NAME = "puSharedPreferences";
 
     public static boolean isInitialised(Context context){
-        return Boolean.parseBoolean(readFromSharedPreferences(context, KEY_INITIALISE));
+        String str = readFromSharedPreferences(context, KEY_INITIALISE);
+        if(str.equals("")){
+            return false;
+        }
+        return Boolean.parseBoolean(str);
     }
 
     public static void initialise(Context context){
