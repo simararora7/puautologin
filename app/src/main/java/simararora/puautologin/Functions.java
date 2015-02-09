@@ -33,7 +33,7 @@ public class Functions {
         return readFromSharedPreferences(context, KEY_ACTIVE_USER);
     }
 
-    public void setActiveUser(Context context, String userName){
+    public static void setActiveUser(Context context, String userName){
         writeToSharedPreferences(context, KEY_ACTIVE_USER, userName);
     }
 

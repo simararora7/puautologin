@@ -7,19 +7,18 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
-import android.util.Log;
 
 /**
  * Created by Simar Arora on 2/3/2015.
+ *
  */
 
 public class WifiConnectedReceiver extends BroadcastReceiver {
     private Context context;
-    private WifiManager wifiManager;
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (!isUsernamePasswordInitialised())
+        if (!Functions.isInitialised(context))
             return;
         this.context = context;
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -31,7 +30,7 @@ public class WifiConnectedReceiver extends BroadcastReceiver {
     }
 
     private void startLoginTask() {
-        new LoginTask(context).execute(getUserNameFromSharedPreferences(), getPasswordFromSharedPreferences());
+        new LoginTask(context).execute();
     }
 
     private boolean canLogin() {
@@ -46,17 +45,5 @@ public class WifiConnectedReceiver extends BroadcastReceiver {
             }
         }
         return false;
-    }
-
-    private String getUserNameFromSharedPreferences() {
-        return "abh1121662";
-    }
-
-    private String getPasswordFromSharedPreferences() {
-        return "Boobs@123";
-    }
-
-    private boolean isUsernamePasswordInitialised() {
-        return true;
     }
 }

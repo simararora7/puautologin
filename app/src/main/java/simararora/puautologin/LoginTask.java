@@ -12,7 +12,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class LoginTask extends AsyncTask<String, String, Void> {
+public class LoginTask extends AsyncTask<Void, String, Void> {
 
     private Context context;
     private static final String loginURL = "https://securelogin.arubanetworks.com/cgi-bin/login?cmd=login";
@@ -22,8 +22,10 @@ public class LoginTask extends AsyncTask<String, String, Void> {
     }
 
     @Override
-    protected Void doInBackground(String... params) {
-        String urlParameters = "user=" + params[0] + "&password=" + params[1];
+    protected Void doInBackground(Void... params) {
+        String userName = Functions.getActiveUserName(context);
+        String password = Functions.getPasswordForUserName(context, userName);
+        String urlParameters = "user=" + userName + "&password=" + password;
         HttpURLConnection connection = null;
         InputStream inputStream = null;
         BufferedReader bufferedReader = null;
