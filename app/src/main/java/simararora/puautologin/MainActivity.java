@@ -2,11 +2,15 @@ package simararora.puautologin;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,7 +20,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends ActionBarActivity implements View.OnClickListener, AdapterView.OnItemClickListener, DialogAddUser.SendMessageToMainActivity, DialogOptions.OptionsDialogCommunicator {
 
-    private ArrayAdapter<String> adapter;
+    private UserListAdapter adapter;
     private ArrayList<String> users;
     protected TextView noUserAdded;
 
@@ -34,7 +38,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         userDatabase.open();
         ListView listOfUsers = (ListView) findViewById(R.id.listUsers);
         users = userDatabase.getAllUsers();
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, users);
+        adapter = new UserListAdapter();
         listOfUsers.setAdapter(adapter);
         userDatabase.close();
         listOfUsers.setOnItemClickListener(this);
@@ -78,7 +82,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     @Override
     public void dialogToActivity(String user) {
         users.add(user);
-        adapter.add(user);
+        //adapter.add(user);
         adapter.notifyDataSetChanged();
         noUserAdded.setVisibility(View.GONE);
     }
@@ -89,7 +93,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         if (username.isEmpty()) {
             Functions.disable(this);
         }
-        adapter.remove(username);
+        //adapter.remove(username);
         adapter.notifyDataSetChanged();
         Toast.makeText(this, "Delete Successful", Toast.LENGTH_SHORT).show();
     }
@@ -97,9 +101,9 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     @Override
     public void onEditUserConformation(String oldUsername, String newUsername) {
         users.remove(oldUsername);
-        adapter.remove(oldUsername);
+        //adapter.remove(oldUsername);
         users.add(newUsername);
-        adapter.add(newUsername);
+        //adapter.add(newUsername);
         adapter.notifyDataSetChanged();
         Toast.makeText(this, "Edit Successful", Toast.LENGTH_SHORT).show();
     }
@@ -107,5 +111,32 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     @Override
     public void onSetDefaultUser(String username) {
         Toast.makeText(this, "Default User Changed", Toast.LENGTH_SHORT).show();
+    }
+
+    private class UserListAdapter extends BaseAdapter{
+
+        @Override
+        public int getCount() {
+            return users.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return users.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            convertView = LayoutInflater.from(MainActivity.this).inflate(R.layout.user_row, parent, false);
+            ImageView defaultImageView = (ImageView) convertView.findViewById(R.id.ivDefault);
+            TextView user = (TextView) convertView.findViewById(R.id.tvUser);
+            user.setText(users.get(position));
+            return null;
+        }
     }
 }
