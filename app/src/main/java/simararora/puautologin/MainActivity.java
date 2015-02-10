@@ -73,7 +73,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+        DialogOptions.newInstance(users.get(position)).show(getSupportFragmentManager(), "Options");
     }
 
     @Override
@@ -86,6 +86,9 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     @Override
     public void onDeleteUserConformation(String username) {
         users.remove(username);
+        if(username.isEmpty()){
+            Functions.disable(this);
+        }
         adapter.remove(username);
         adapter.notifyDataSetChanged();
         Toast.makeText(this, "Delete Successful", Toast.LENGTH_SHORT).show();

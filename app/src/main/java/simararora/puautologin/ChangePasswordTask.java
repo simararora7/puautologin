@@ -22,9 +22,25 @@ public class ChangePasswordTask extends AsyncTask<String, String, Void> {
     private String userName = "12uit359";
     private String oldPassword = "Simar@765";
     private String newPassword = "Simar@7654";
+    private ChangePasswordTaskCompletionCommunicator communicator;
+
+    public ChangePasswordTask(DialogChangePassword dialogChangePassword){
+        communicator = (ChangePasswordTaskCompletionCommunicator) dialogChangePassword;
+    }
 
     @Override
     protected Void doInBackground(String... params) {
+        loginToPortal();
+        changePassword();
+        logoutFromPortal();
+        return null;
+    }
+
+    private void loginToPortal() {
+
+    }
+
+    private void changePassword() {
         HttpURLConnection connection = null;
         InputStream inputStream = null;
         BufferedReader bufferedReader =null;
@@ -82,7 +98,14 @@ public class ChangePasswordTask extends AsyncTask<String, String, Void> {
                 }
             }
         }
-        return null;
     }
 
+    private void logoutFromPortal() {
+
+    }
+
+    interface ChangePasswordTaskCompletionCommunicator{
+        public void onSuccess();
+        public void onFailure();
+    }
 }

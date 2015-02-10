@@ -33,7 +33,7 @@ public class DialogOptions extends DialogFragment implements AdapterView.OnItemC
         View view = inflater.inflate(R.layout.dialog_options, null);
         listview = (ListView) view.findViewById(R.id.lvOptions);
         listview.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, new String[]{
-                "Set Default", "Edit", "Delete"
+                "Set Default", "Edit", "Delete", "Change Password"
         }));
         listview.setOnItemClickListener(this);
         return view;
@@ -59,6 +59,9 @@ public class DialogOptions extends DialogFragment implements AdapterView.OnItemC
             case 2:
                 deleteUser();
                 break;
+            case 3:
+                changePassword();
+                break;
         }
     }
 
@@ -83,6 +86,10 @@ public class DialogOptions extends DialogFragment implements AdapterView.OnItemC
         userDatabase.close();
         communicator.onDeleteUserConformation(username);
         dismiss();
+    }
+
+    private void changePassword(){
+
     }
 
     @Override
