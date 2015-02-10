@@ -13,32 +13,24 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:weightSum="100">
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="80"
-            android:orientation="horizontal"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:gravity="center">
 
             <Button
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Login"
                 android:layout_margin="5dp"
                 android:id="@+id/bLogin" />
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Change Password"
-                android:layout_margin="5dp"
-                android:id="@+id/bChangePassword" />
 
             <Button
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Logout"
                 android:layout_margin="5dp"
@@ -46,10 +38,19 @@
 
         </LinearLayout>
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="No User Added"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:textSize="30dp"
+            android:id="@+id/etNoUserAdded"
+            android:visibility="gone" />
+
         <ListView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="20"
+            android:layout_height="wrap_content"
             android:id="@+id/listUsers"></ListView>
     </LinearLayout>
 </LinearLayout>

@@ -8,15 +8,17 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 
 
-public class MainActivity extends ActionBarActivity implements View.OnClickListener, AdapterView.OnItemClickListener, DialogAddUser.SendMessageToMainActivity, DialogOptions.OptionsDialogCommunicator{
+public class MainActivity extends ActionBarActivity implements View.OnClickListener, AdapterView.OnItemClickListener, DialogAddUser.SendMessageToMainActivity, DialogOptions.OptionsDialogCommunicator {
 
     private ArrayAdapter<String> adapter;
     private ArrayList<String> users;
+    protected TextView noUserAdded;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,17 +29,18 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
         findViewById(R.id.bLogin).setOnClickListener(this);
         findViewById(R.id.bLogout).setOnClickListener(this);
-        findViewById(R.id.bChangePassword).setOnClickListener(this);
 
         UserDatabase userDatabase = new UserDatabase(this);
         userDatabase.open();
         ListView listOfUsers = (ListView) findViewById(R.id.listUsers);
-        users =  userDatabase.getAllUsers();
+        users = userDatabase.getAllUsers();
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, users);
         listOfUsers.setAdapter(adapter);
         userDatabase.close();
         listOfUsers.setOnItemClickListener(this);
-
+        noUserAdded = (TextView) findViewById(R.id.etNoUserAdded);
+        if (users.isEmpty())
+            noUserAdded.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -49,7 +52,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == R.id.action_add_user){
+        if (item.getItemId() == R.id.action_add_user) {
             new DialogAddUser().show(getSupportFragmentManager(), "DialogAddUser");
         }
         return super.onOptionsItemSelected(item);
@@ -57,18 +60,14 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.bLogin:
                 new LoginTask(MainActivity.this).execute();
                 break;
             case R.id.bLogout:
                 new LogoutTask(MainActivity.this).execute();
                 break;
-            case R.id.bChangePassword:
-                new ChangePasswordTask().execute();
-                break;
         }
-
     }
 
     @Override
@@ -81,12 +80,13 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         users.add(user);
         adapter.add(user);
         adapter.notifyDataSetChanged();
+        noUserAdded.setVisibility(View.GONE);
     }
 
     @Override
     public void onDeleteUserConformation(String username) {
         users.remove(username);
-        if(username.isEmpty()){
+        if (username.isEmpty()) {
             Functions.disable(this);
         }
         adapter.remove(username);

@@ -9,12 +9,13 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 /**
  * Created by Simar Arora on 2/9/2015.
  *
  */
-public class DialogOptions extends DialogFragment implements AdapterView.OnItemClickListener, DialogEditUser.EditDialogCommunicator{
+public class DialogOptions extends DialogFragment implements AdapterView.OnItemClickListener, DialogEditUser.EditDialogCommunicator, DialogChangePassword.CommunicatorChangePassword{
 
     private String username, password;
     private ListView listview;
@@ -100,6 +101,17 @@ public class DialogOptions extends DialogFragment implements AdapterView.OnItemC
 
     @Override
     public void onEditAbort() {
+        dismiss();
+    }
+
+    @Override
+    public void onChangePasswordAbort() {
+        dismiss();
+    }
+
+    @Override
+    public void onSuccessfulChangePassword() {
+        Toast.makeText(getActivity(), "Password Changed Successfully", Toast.LENGTH_SHORT).show();
         dismiss();
     }
 
