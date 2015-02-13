@@ -24,10 +24,7 @@ public class ChangePasswordTask extends AsyncTask<String, String, Void> {
     private String newPassword = "Simar@7654";
     private ChangePasswordTaskCompletionCommunicator communicator;
 
-    public ChangePasswordTask(DialogChangePassword dialogChangePassword){
-        communicator = (ChangePasswordTaskCompletionCommunicator) dialogChangePassword;
-    }
-
+   
     @Override
     protected Void doInBackground(String... params) {
         loginToPortal();

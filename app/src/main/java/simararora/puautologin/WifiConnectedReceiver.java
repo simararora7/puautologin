@@ -7,6 +7,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.util.Log;
 
 /**
  * Created by Simar Arora on 2/3/2015.
@@ -18,14 +19,18 @@ public class WifiConnectedReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        debug("Start");
         if (!Functions.isInitialised(context))
             return;
+        debug("Continue");
         this.context = context;
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         if ((networkInfo != null) && (networkInfo.getType() == ConnectivityManager.TYPE_WIFI) && (networkInfo.getState().equals(NetworkInfo.State.CONNECTED))) {
-            if (canLogin())
+            if (canLogin()){
+                debug("Can Login");
                 startLoginTask();
+            }
         }
     }
 
@@ -45,5 +50,9 @@ public class WifiConnectedReceiver extends BroadcastReceiver {
             }
         }
         return false;
+    }
+
+    private void debug(String s){
+        Log.d("Simar", s);
     }
 }

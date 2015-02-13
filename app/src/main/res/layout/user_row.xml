@@ -3,23 +3,26 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:weightSum="4">
+    android:background="@drawable/custom_bg"
+    android:paddingTop="15dp"
+    android:paddingBottom="15dp"
+    android:id="@+id/llRow"
+   >
 
-    <ImageView
-        android:layout_width="match_parent"
+    <CheckBox
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_launcher"
         android:layout_gravity="center"
-        android:layout_weight="3"
-        android:id="@+id/ivDefault" />
+        android:id="@+id/cbActiveUser"
+        />
 
     <TextView
         android:layout_width="match_parent"
+        android:layout_marginLeft="10dp"
         android:layout_height="wrap_content"
         android:text="Dummy Text"
-        android:textSize="20dp"
+        android:textSize="14dp"
         android:layout_gravity="center"
-        android:layout_weight="1"
         android:id="@+id/tvUser" />
 
 </LinearLayout>

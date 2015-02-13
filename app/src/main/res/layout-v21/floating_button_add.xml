@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ImageButton
+    android:id="@+id/bAdd"
+    android:layout_width="@dimen/round_button_diameter"
+    android:layout_height="@dimen/round_button_diameter"
+    android:layout_marginEnd="@dimen/add_button_margin"
+    android:tint="@android:color/white"
+    android:background="@drawable/oval_ripple"
+    android:src="@android:drawable/ic_input_add"
+    android:elevation="@dimen/elevation_low"
+    android:stateListAnimator="@anim/button_elevation"
+    tools:ignore="RtlCompat"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" />
+
