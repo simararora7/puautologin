@@ -26,6 +26,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alertdialogpro.AlertDialogPro;
+
 import java.util.ArrayList;
 
 
@@ -145,7 +147,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     private void showAddDialog() {
         View view;
         final EditText username, password;
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialogPro.Builder builder = new AlertDialogPro.Builder(this);
         builder.setTitle("Add User");
         view = getLayoutInflater().inflate(R.layout.dialog_add_user, null);
         username = (EditText) view.findViewById(R.id.etUsername);
@@ -190,7 +192,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     private void showOptionsDialog(final String username) {
         View view = getLayoutInflater().inflate(R.layout.dialog_options, null);
         ListView optionsList = (ListView) view.findViewById(R.id.lvOptions);
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final AlertDialogPro.Builder builder = new AlertDialogPro.Builder(this);
         optionsList.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, new String[]{
                 "Edit", "Delete", "Change Password"
         }));
@@ -226,7 +228,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     private void showEditDialog(final String oldUser) {
         View view;
         final EditText username, password;
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialogPro.Builder builder = new AlertDialogPro.Builder(this);
         builder.setTitle("Edit User");
         view = getLayoutInflater().inflate(R.layout.dialog_edit_user, null);
         username = (EditText) view.findViewById(R.id.etUsername);
@@ -262,15 +264,28 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     }
 
     private void showAboutDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//        final MaterialDialog dialog = new MaterialDialog(this);
+//        dialog.setTitle("About");
+//        dialog.setMessage("This application is created by Simarpreet Singh Arora, CSE, 3rd Year, UIET.");
+//        dialog.setCanceledOnTouchOutside(true);
+//        dialog.setNegativeButton("Back", new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                dialog.dismiss();
+//            }
+//        });
+//        dialog.setPositiveButton("OK", new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                dialog.dismiss();
+//            }
+//        });
+//        dialog.show();
+        AlertDialogPro.Builder builder = new AlertDialogPro.Builder(this);
         builder.setTitle("About");
         builder.setMessage("This application is created by Simarpreet Singh Arora, CSE, 3rd Year, UIET.");
-        builder.setNeutralButton("Back", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-            }
-        });
+        builder.setCancelable(true);
+        builder.setPositiveButton("Back", null);
         builder.create().show();
     }
 
