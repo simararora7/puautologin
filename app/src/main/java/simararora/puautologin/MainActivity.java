@@ -43,24 +43,33 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Set Toolbar
         setSupportActionBar((android.support.v7.widget.Toolbar) findViewById(R.id.toolbar));
 
+        //Initialise login and logout buttons
         findViewById(R.id.bLogin).setOnClickListener(this);
         findViewById(R.id.bLogout).setOnClickListener(this);
 
+        //Get users from database
         UserDatabase userDatabase = new UserDatabase(this);
         userDatabase.open();
-        listOfUsers = (ListView) findViewById(R.id.listUsers);
         users = userDatabase.getAllUsers();
+        userDatabase.close();
+
+        //Initialise list and its adapter
+        listOfUsers = (ListView) findViewById(R.id.listUsers);
         UserListAdapter adapter = new UserListAdapter();
         listOfUsers.setAdapter(adapter);
-        userDatabase.close();
+
+        //Check if there are no users and display appropriate message
         noUserAdded = (TextView) findViewById(R.id.etNoUserAdded);
         selectDefaultUser = (TextView) findViewById(R.id.etSelectDefaultUser);
         if (users.isEmpty()) {
             noUserAdded.setVisibility(View.VISIBLE);
             selectDefaultUser.setVisibility(View.GONE);
         }
+
+        //Initialise Floating Button
         ImageButton addUser = (ImageButton) findViewById(R.id.bAdd);
         addUser.setOnClickListener(new View.OnClickListener() {
 
@@ -79,80 +88,45 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_about:
-                showAboutDialog();
-                break;
-            case R.id.action_feedback:
-                sendFeedback();
-                break;
-            case R.id.action_open_portal:
-                openPortal();
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
+    /**
+     *
+     * @param v
+     * Handles Button Clicks
+     */
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.bLogin:
+                //Start Login Task
                 new LoginTask(MainActivity.this).execute();
                 break;
             case R.id.bLogout:
+                //Start Logout Task
                 new LogoutTask(MainActivity.this).execute();
                 break;
         }
     }
 
-
-    public void onSuccessfulAddUser(String user) {
-        users.add(user);
-        listOfUsers.setAdapter(new UserListAdapter());
-        noUserAdded.setVisibility(View.GONE);
-        selectDefaultUser.setVisibility(View.VISIBLE);
-    }
-
-    public void onDeleteUserConformation(String username) {
-        users.remove(username);
-        if (users.isEmpty()) {
-            Functions.disable(this);
-            noUserAdded.setVisibility(View.VISIBLE);
-            selectDefaultUser.setVisibility(View.GONE);
-        } else {
-            if (Functions.getActiveUserName(this).equals(username))
-                Functions.setActiveUser(this, users.get(0));
-        }
-        listOfUsers.setAdapter(new UserListAdapter());
-        Toast.makeText(this, "Delete Successful", Toast.LENGTH_SHORT).show();
-    }
-
-    public void onEditUserConformation(String oldUsername, String newUsername) {
-        users.remove(oldUsername);
-        users.add(newUsername);
-        Functions.setActiveUser(this, newUsername);
-        listOfUsers.setAdapter(new UserListAdapter());
-        Toast.makeText(this, "Edit Successful", Toast.LENGTH_SHORT).show();
-    }
-
+    /**
+     * Shows Add User Dialog
+     * Takes input from User
+     * Add information to database
+     */
     private void showAddDialog() {
         View view;
         final EditText username, password;
+
+        //Create Dialog Builder
         AlertDialogPro.Builder builder = new AlertDialogPro.Builder(this);
         builder.setTitle("Add User");
+
+        //Inflate view for Dialog
         view = getLayoutInflater().inflate(R.layout.dialog_add_user, null);
         username = (EditText) view.findViewById(R.id.etUsername);
         password = (EditText) view.findViewById(R.id.etPassword);
         builder.setView(view);
+
+        //Set Buttons for Dialog
         builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -186,9 +160,31 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             }
         });
         builder.setCancelable(false);
+
+        //Show Dialog
         builder.create().show();
     }
 
+    /**
+     *
+     * @param user
+     * Updates the list after user has been added successfully
+     */
+    public void onSuccessfulAddUser(String user) {
+        users.add(user);
+        listOfUsers.setAdapter(new UserListAdapter());
+        noUserAdded.setVisibility(View.GONE);
+        selectDefaultUser.setVisibility(View.VISIBLE);
+    }
+
+    /**
+     *
+     * @param username
+     * Shows options dialog
+     * Edit
+     * Delete
+     * Change Password
+     */
     private void showOptionsDialog(final String username) {
         View view = getLayoutInflater().inflate(R.layout.dialog_options, null);
         ListView optionsList = (ListView) view.findViewById(R.id.lvOptions);
@@ -225,6 +221,30 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         dialog.show();
     }
 
+    /**
+     *
+     * @param username
+     * Updates the list after user has been deleted successfully
+     */
+    public void onDeleteUserConformation(String username) {
+        users.remove(username);
+        if (users.isEmpty()) {
+            Functions.disable(this);
+            noUserAdded.setVisibility(View.VISIBLE);
+            selectDefaultUser.setVisibility(View.GONE);
+        } else {
+            if (Functions.getActiveUserName(this).equals(username))
+                Functions.setActiveUser(this, users.get(0));
+        }
+        listOfUsers.setAdapter(new UserListAdapter());
+        Toast.makeText(this, "Delete Successful", Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     *
+     * @param oldUser
+     * Shows Edit Dialog
+     */
     private void showEditDialog(final String oldUser) {
         View view;
         final EditText username, password;
@@ -256,31 +276,64 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
             }
         });
         builder.setCancelable(false);
         builder.create().show();
     }
 
+    /**
+     *
+     * @param oldUsername
+     * @param newUsername
+     * Updates list after user has been edited successfully
+     */
+    public void onEditUserConformation(String oldUsername, String newUsername) {
+        users.remove(oldUsername);
+        users.add(newUsername);
+        Functions.setActiveUser(this, newUsername);
+        listOfUsers.setAdapter(new UserListAdapter());
+        Toast.makeText(this, "Edit Successful", Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     *
+     * @param menu
+     * @return
+     * Creates the menu for this activity
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    /**
+     *
+     * @param item
+     * @return
+     * Handles Menu Item Clicks
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_about:
+                showAboutDialog();
+                break;
+            case R.id.action_feedback:
+                sendFeedback();
+                break;
+            case R.id.action_open_portal:
+                openPortal();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * Shows About Dialog
+     */
     private void showAboutDialog() {
-//        final MaterialDialog dialog = new MaterialDialog(this);
-//        dialog.setTitle("About");
-//        dialog.setMessage("This application is created by Simarpreet Singh Arora, CSE, 3rd Year, UIET.");
-//        dialog.setCanceledOnTouchOutside(true);
-//        dialog.setNegativeButton("Back", new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                dialog.dismiss();
-//            }
-//        });
-//        dialog.setPositiveButton("OK", new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                dialog.dismiss();
-//            }
-//        });
-//        dialog.show();
         AlertDialogPro.Builder builder = new AlertDialogPro.Builder(this);
         builder.setTitle("About");
         builder.setMessage("This application is created by Simarpreet Singh Arora, CSE, 3rd Year, UIET.");
@@ -289,6 +342,9 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         builder.create().show();
     }
 
+    /**
+     * Opens Email App for sending feedback
+     */
     private void sendFeedback() {
         String[] email = new String[]{"simarpreetsingharora@gmail.com"};
         Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
@@ -301,6 +357,9 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         }
     }
 
+    /**
+     * Opens Browser for option portal site
+     */
     private void openPortal() {
         Uri uri = Uri.parse("https://securelogin.arubanetworks.com/cgi-bin/login?cmd=login");
         try {
@@ -308,9 +367,12 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         } catch (ActivityNotFoundException e) {
             Toast.makeText(this, "No Web Browser Found", Toast.LENGTH_SHORT).show();
         }
-
     }
 
+    /**
+     * Handles Back Button Press
+     * Press Back Again to Exit
+     */
     @Override
     public void onBackPressed() {
         if (doubleBackToExitPressedOnce) {
@@ -326,10 +388,11 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 doubleBackToExitPressedOnce = false;
             }
         }, 2000);
-
     }
 
-
+    /**
+     * Custom Adapter for list of Users
+     */
     private class UserListAdapter extends BaseAdapter {
 
         private ArrayList<CheckBox> checkBoxes;
@@ -341,21 +404,42 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             activeUser = Functions.getActiveUserName(MainActivity.this);
         }
 
+        /**
+         *
+         * @return number of users
+         */
         @Override
         public int getCount() {
             return users.size();
         }
 
+        /**
+         *
+         * @param position
+         * @return user at the position
+         */
         @Override
         public Object getItem(int position) {
             return users.get(position);
         }
 
+        /**
+         *
+         * @param position
+         * @return id = position
+         */
         @Override
         public long getItemId(int position) {
             return position;
         }
 
+        /**
+         * Creates view for single list item
+         * @param position
+         * @param convertView
+         * @param parent
+         * @return
+         */
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
             final String currentUser = users.get(position);
@@ -381,7 +465,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                         if (position == flag)
                             buttonView.setChecked(true);
                     }
-
                 }
             });
             LinearLayout linearLayout = (LinearLayout) convertView.findViewById(R.id.llRow);
@@ -399,7 +482,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 }
             });
             return convertView;
-
         }
     }
 }
