@@ -2,6 +2,7 @@ package simararora.puautologin;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
@@ -25,6 +26,7 @@ public class LogoutTask extends AsyncTask<Void, String, Void> {
     }
     @Override
     protected Void doInBackground(Void... params) {
+        Log.d("Simar", "Logout");
         HttpURLConnection connection = null;
         InputStream inputStream = null;
         BufferedReader bufferedReader = null;

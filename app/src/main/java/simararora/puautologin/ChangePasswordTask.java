@@ -13,6 +13,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
+ *
  * Created by Simar Arora on 2/4/2015.
  *
  */
@@ -22,8 +23,6 @@ public class ChangePasswordTask extends AsyncTask<String, String, Void> {
     private String userName = "12uit359";
     private String oldPassword = "Simar@765";
     private String newPassword = "Simar@7654";
-    private ChangePasswordTaskCompletionCommunicator communicator;
-
 
     @Override
     protected Void doInBackground(String... params) {
@@ -99,10 +98,5 @@ public class ChangePasswordTask extends AsyncTask<String, String, Void> {
 
     private void logoutFromPortal() {
 
-    }
-
-    interface ChangePasswordTaskCompletionCommunicator{
-        public void onSuccess();
-        public void onFailure();
     }
 }

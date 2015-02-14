@@ -2,6 +2,7 @@ package simararora.puautologin;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
@@ -23,6 +24,7 @@ public class LoginTask extends AsyncTask<Void, String, Void> {
 
     @Override
     protected Void doInBackground(Void... params) {
+        Log.d("Simar", "Login");
         String userName = Functions.getActiveUserName(context);
         String password = Functions.getPasswordForUserName(context, userName);
         String urlParameters = "user=" + userName + "&password=" + password;

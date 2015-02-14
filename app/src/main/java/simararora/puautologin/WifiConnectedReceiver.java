@@ -27,7 +27,7 @@ public class WifiConnectedReceiver extends BroadcastReceiver {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         if ((networkInfo != null) && (networkInfo.getType() == ConnectivityManager.TYPE_WIFI) && (networkInfo.getState().equals(NetworkInfo.State.CONNECTED))) {
-            if (canLogin()){
+            if (isPUCampus()){
                 debug("Can Login");
                 startLoginTask();
             }
@@ -38,7 +38,7 @@ public class WifiConnectedReceiver extends BroadcastReceiver {
         new LoginTask(context).execute();
     }
 
-    private boolean canLogin() {
+    private boolean isPUCampus() {
         WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
         if (wifiManager != null) {
             WifiInfo wifiInfo = wifiManager.getConnectionInfo();

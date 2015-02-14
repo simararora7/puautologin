@@ -1,6 +1,5 @@
 package simararora.puautologin;
 
-import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -193,7 +192,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 "Edit", "Delete", "Change Password"
         }));
         builder.setView(view);
-        final AlertDialog dialog = builder.create();
+        final AlertDialogPro dialog = builder.create();
         optionsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
