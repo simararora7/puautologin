@@ -1,6 +1,8 @@
 package simararora.puautologin;
 
+import android.app.ActivityManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
@@ -12,6 +14,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
 
 public class LoginTask extends AsyncTask<Void, String, Void> {
 
@@ -25,6 +28,7 @@ public class LoginTask extends AsyncTask<Void, String, Void> {
     @Override
     protected Void doInBackground(Void... params) {
         Log.d("Simar", "Login");
+        publishProgress("Login Test", "true");
         String userName = Functions.getActiveUserName(context);
         String password = Functions.getPasswordForUserName(context, userName);
         String urlParameters = "user=" + userName + "&password=" + password;
@@ -59,13 +63,13 @@ public class LoginTask extends AsyncTask<Void, String, Void> {
 
             while ((line = bufferedReader.readLine()) != null) {
                 if (line.contains("External Welcome Page")) {
-                    publishProgress("Login Successful");
+                    publishProgress("Login Successful", "true");
                     break;
                 } else if (line.contains("Authentication failed")) {
-                    publishProgress("Authentication Failed");
+                    publishProgress("Authentication Failed", "false");
                     break;
                 } else if (line.contains("Only one user login session is allowed")) {
-                    publishProgress("Only one user login session is allowed");
+                    publishProgress("Only one user login session is allowed", "false");
                     break;
                 }
             }
@@ -95,6 +99,29 @@ public class LoginTask extends AsyncTask<Void, String, Void> {
     @Override
     protected void onProgressUpdate(String... values) {
         super.onProgressUpdate(values);
-        Toast.makeText(context, values[0], Toast.LENGTH_SHORT).show();
+        if (!isAppOnForeground()) {
+            boolean showAction = Boolean.parseBoolean(values[1]);
+            Intent intent = new Intent(context, NotificationService.class);
+            intent.putExtra("message", showAction);
+            intent.putExtra("showAction", true);
+            context.startService(intent);
+        } else
+            Toast.makeText(context, values[0], Toast.LENGTH_SHORT).show();
+    }
+
+    private boolean isAppOnForeground() {
+        ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningAppProcessInfo> appProcesses = activityManager.getRunningAppProcesses();
+        if (appProcesses == null) {
+            return false;
+        }
+        final String packageName = context.getPackageName();
+        for (ActivityManager.RunningAppProcessInfo appProcess : appProcesses) {
+            if (appProcess.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND && appProcess.processName.equals(packageName)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
+
