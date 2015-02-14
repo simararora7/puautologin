@@ -99,7 +99,7 @@ public class LoginTask extends AsyncTask<Void, String, Void> {
     @Override
     protected void onProgressUpdate(String... values) {
         super.onProgressUpdate(values);
-        if (!isAppOnForeground()) {
+        if (!Functions.isAppOnForeground(context)) {
             boolean showAction = Boolean.parseBoolean(values[1]);
             Intent intent = new Intent(context, NotificationService.class);
             intent.putExtra("message", showAction);
@@ -107,21 +107,6 @@ public class LoginTask extends AsyncTask<Void, String, Void> {
             context.startService(intent);
         } else
             Toast.makeText(context, values[0], Toast.LENGTH_SHORT).show();
-    }
-
-    private boolean isAppOnForeground() {
-        ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-        List<ActivityManager.RunningAppProcessInfo> appProcesses = activityManager.getRunningAppProcesses();
-        if (appProcesses == null) {
-            return false;
-        }
-        final String packageName = context.getPackageName();
-        for (ActivityManager.RunningAppProcessInfo appProcess : appProcesses) {
-            if (appProcess.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND && appProcess.processName.equals(packageName)) {
-                return true;
-            }
-        }
-        return false;
     }
 }
 

@@ -1,7 +1,10 @@
 package simararora.puautologin;
 
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.SharedPreferences;
+
+import java.util.List;
 
 /**
  * Created by Simar Arora on 2/4/2015.
@@ -57,5 +60,20 @@ public class Functions {
         SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
         sharedPreferencesEditor.putString(key, value);
         sharedPreferencesEditor.apply();
+    }
+
+    public static boolean isAppOnForeground(Context context) {
+        ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningAppProcessInfo> appProcesses = activityManager.getRunningAppProcesses();
+        if (appProcesses == null) {
+            return false;
+        }
+        final String packageName = context.getPackageName();
+        for (ActivityManager.RunningAppProcessInfo appProcess : appProcesses) {
+            if (appProcess.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND && appProcess.processName.equals(packageName)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

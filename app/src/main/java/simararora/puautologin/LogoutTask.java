@@ -17,7 +17,7 @@ import java.util.List;
 
 /**
  * Created by Simar Arora on 2/3/2015.
- * 
+ *
  */
 public class LogoutTask extends AsyncTask<Void, String, Void> {
 
@@ -75,27 +75,12 @@ public class LogoutTask extends AsyncTask<Void, String, Void> {
     @Override
     protected void onProgressUpdate(String... values) {
         super.onProgressUpdate(values);
-        if (!isAppOnForeground()) {
+        if (!Functions.isAppOnForeground(context)) {
             Intent intent = new Intent(context, NotificationService.class);
             intent.putExtra("message", values[0]);
             intent.putExtra("showAction", false);
             context.startService(intent);
         } else
             Toast.makeText(context, values[0], Toast.LENGTH_SHORT).show();
-    }
-
-    private boolean isAppOnForeground() {
-        ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-        List<ActivityManager.RunningAppProcessInfo> appProcesses = activityManager.getRunningAppProcesses();
-        if (appProcesses == null) {
-            return false;
-        }
-        final String packageName = context.getPackageName();
-        for (ActivityManager.RunningAppProcessInfo appProcess : appProcesses) {
-            if (appProcess.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND && appProcess.processName.equals(packageName)) {
-                return true;
-            }
-        }
-        return false;
     }
 }
