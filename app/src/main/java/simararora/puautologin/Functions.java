@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 
 /**
  * Created by Simar Arora on 2/4/2015.
+ *
  */
 public class Functions {
 
@@ -55,6 +56,6 @@ public class Functions {
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREFERENCES_NAME, 0);
         SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
         sharedPreferencesEditor.putString(key, value);
-        sharedPreferencesEditor.commit();
+        sharedPreferencesEditor.apply();
     }
 }
