@@ -29,6 +29,8 @@ import com.alertdialogpro.AlertDialogPro;
 
 import java.util.ArrayList;
 
+import simararora.puautologin.widget.LoginService;
+
 
 public class MainActivity extends ActionBarActivity implements View.OnClickListener {
 

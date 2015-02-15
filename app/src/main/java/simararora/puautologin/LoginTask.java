@@ -100,8 +100,8 @@ public class LoginTask extends AsyncTask<Void, String, Void> {
         if (!Functions.isAppOnForeground(context)) {
             boolean showAction = Boolean.parseBoolean(values[1]);
             Intent intent = new Intent(context, NotificationService.class);
-            intent.putExtra("message", showAction);
-            intent.putExtra("showAction", true);
+            intent.putExtra("message", values[0]);
+            intent.putExtra("showAction", showAction);
             context.startService(intent);
         } else
             Toast.makeText(context, values[0], Toast.LENGTH_SHORT).show();

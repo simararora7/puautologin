@@ -6,6 +6,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 
@@ -16,11 +17,7 @@ import simararora.puautologin.widget.LogoutService;
  *
  */
 public class NotificationService extends IntentService{
-    /**
-     * Creates an IntentService.  Invoked by your subclass's constructor.
-     *
-     * @param name Used to name the worker thread, important only for debugging.
-     */
+
     public NotificationService(String name) {
         super(name);
     }
@@ -35,15 +32,15 @@ public class NotificationService extends IntentService{
         boolean showAction = intent.getBooleanExtra("showAction", true);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
-        builder.setSmallIcon(R.drawable.ic_launcher);
+        builder.setSmallIcon(R.drawable.ic_notification);
         builder.setContentTitle("PU Auto Login");
         builder.setContentText(message);
         builder.setPriority(NotificationCompat.PRIORITY_HIGH);
-
+        builder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_notification_large));
         if(showAction){
             Intent logoutIntent = new Intent(this, LogoutService.class);
             PendingIntent logoutPendingIntent = PendingIntent.getService(this, 0, logoutIntent, 0);
-            builder.addAction(R.drawable.ic_launcher, "Logout", logoutPendingIntent);
+            builder.addAction(R.drawable.action_logout, "Logout", logoutPendingIntent);
         }
 
         Intent in = new Intent(this, MainActivity.class);

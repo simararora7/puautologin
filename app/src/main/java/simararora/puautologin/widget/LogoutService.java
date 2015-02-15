@@ -3,6 +3,8 @@ package simararora.puautologin.widget;
 import android.app.IntentService;
 import android.content.Intent;
 
+import simararora.puautologin.LogoutTask;
+
 /**
  * Created by Simar Arora on 2/14/2015.
  *
@@ -19,6 +21,6 @@ public class LogoutService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        new simararora.puautologin.LogoutTask(this).execute();
+        new LogoutTask(this).execute();
     }
 }
