@@ -15,7 +15,6 @@ import java.net.URL;
 
 /**
  * Created by Simar Arora on 2/3/2015.
- *
  */
 public class LogoutTask extends AsyncTask<Void, String, Void> {
 
@@ -24,6 +23,9 @@ public class LogoutTask extends AsyncTask<Void, String, Void> {
 
     public LogoutTask(Context context) {
         this.context = context;
+        if (Functions.isLollipop()) {
+            Functions.setNetworkTypeToWifi(context);
+        }
     }
 
     @Override

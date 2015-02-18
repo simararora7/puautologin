@@ -3,6 +3,7 @@ package simararora.puautologin;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -21,6 +22,9 @@ public class LoginTask extends AsyncTask<Void, String, Void> {
 
     public LoginTask(Context context) {
         this.context = context;
+        if(Functions.isLollipop()){
+            Functions.setNetworkTypeToWifi(context);
+        }
     }
 
     @Override
