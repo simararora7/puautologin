@@ -15,6 +15,7 @@ import java.net.URL;
 
 /**
  * Created by Simar Arora on 2/3/2015.
+ *
  */
 public class LogoutTask extends AsyncTask<Void, String, Void> {
 
