@@ -1,14 +1,20 @@
 package simararora.puautologin;
 
+import android.annotation.TargetApi;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkCapabilities;
+import android.net.NetworkRequest;
+import android.os.Build;
 
 import java.util.List;
 
 /**
  * Created by Simar Arora on 2/4/2015.
- *
+ * 
  */
 public class Functions {
 
@@ -75,5 +81,22 @@ public class Functions {
             }
         }
         return false;
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public static void setNetworkTypeToWifi(Context context) {
+        final ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkRequest.Builder requestBuilder = new NetworkRequest.Builder();
+        requestBuilder.addCapability(NetworkCapabilities.TRANSPORT_WIFI);
+        connectivityManager.registerNetworkCallback(requestBuilder.build(), new ConnectivityManager.NetworkCallback() {
+            @Override
+            public void onAvailable(Network network) {
+                ConnectivityManager.setProcessDefaultNetwork(network);
+            }
+        });
+    }
+
+    public static boolean isLollipop() {
+        return Build.VERSION.SDK_INT >= 21;
     }
 }
