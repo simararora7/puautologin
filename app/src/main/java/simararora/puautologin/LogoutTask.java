@@ -32,7 +32,6 @@ public class LogoutTask extends AsyncTask<Void, String, Void> {
     @Override
     protected Void doInBackground(Void... params) {
         Log.d("Simar", "Logout");
-        publishProgress("Logout Test");
         HttpURLConnection connection = null;
         InputStream inputStream = null;
         BufferedReader bufferedReader = null;

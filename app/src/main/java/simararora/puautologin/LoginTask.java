@@ -29,7 +29,6 @@ public class LoginTask extends AsyncTask<Void, String, Void> {
     @Override
     protected Void doInBackground(Void... params) {
         Log.d("Simar", "Login");
-        publishProgress("Login Test", "true");
         String userName = Functions.getActiveUserName(context);
         String password = Functions.getPasswordForUserName(context, userName);
         String urlParameters = "user=" + userName + "&password=" + password;
