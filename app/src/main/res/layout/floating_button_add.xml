@@ -1,21 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.andexert.library.RippleView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    ripple:rv_centered="true"
+<ImageButton
+    android:id="@+id/bAdd"
+    android:layout_width="@dimen/round_button_diameter"
+    android:layout_height="@dimen/round_button_diameter"
+    android:tint="@android:color/white"
+    android:src="@android:drawable/ic_input_add"
+    android:background="@drawable/oval"
+    tools:ignore="RtlCompat"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:ripple="http://schemas.android.com/apk/res-auto">
+    xmlns:tools="http://schemas.android.com/tools" />
 
-    <ImageButton
-        android:id="@+id/bAdd"
-        android:layout_width="@dimen/round_button_diameter"
-        android:layout_height="@dimen/round_button_diameter"
-        android:tint="@android:color/white"
-        android:src="@android:drawable/ic_input_add"
-        android:background="@drawable/oval"
-        tools:ignore="RtlCompat"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools" />
-
-</com.andexert.library.RippleView>

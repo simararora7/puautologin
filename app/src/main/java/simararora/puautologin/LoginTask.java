@@ -1,10 +1,10 @@
 package simararora.puautologin;
 
 import android.content.Context;
-import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -21,8 +21,21 @@ public class LoginTask extends AsyncTask<Void, String, Void> {
 
     public LoginTask(Context context) {
         this.context = context;
-        if(Functions.isLollipop()){
-            Functions.setNetworkTypeToWifi(context);
+    }
+
+    @SuppressWarnings("UnusedParameters")
+    public LoginTask(Context context, boolean fromMainActivity){
+        this.context = context;
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        if ((networkInfo != null) && (networkInfo.getType() == ConnectivityManager.TYPE_WIFI) && (networkInfo.getState().equals(NetworkInfo.State.CONNECTED))) {
+            if (!Functions.isPUCampus(context)){
+                Functions.sendNotification(context, "Not Connected To PU@Campus", false);
+                this.cancel(true);
+            }
+        }else{
+            Functions.sendNotification(context, "Not Connected To Wifi", false);
+            this.cancel(true);
         }
     }
 
@@ -99,14 +112,8 @@ public class LoginTask extends AsyncTask<Void, String, Void> {
     @Override
     protected void onProgressUpdate(String... values) {
         super.onProgressUpdate(values);
-        if (!Functions.isAppOnForeground(context)) {
-            boolean showAction = Boolean.parseBoolean(values[1]);
-            Intent intent = new Intent(context, NotificationService.class);
-            intent.putExtra("message", values[0]);
-            intent.putExtra("showAction", showAction);
-            context.startService(intent);
-        } else
-            Toast.makeText(context, values[0], Toast.LENGTH_SHORT).show();
+        boolean showAction = Boolean.parseBoolean(values[1]);
+        Functions.sendNotification(context, values[0], showAction);
     }
 }
 

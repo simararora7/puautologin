@@ -1,61 +1,41 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".MainActivity"
     android:background="@android:color/white">
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
         <include
             android:id="@+id/toolbar"
             layout="@layout/toolbar" />
 
-        <com.andexert.library.RippleView
-            android:layout_width="wrap_content"
+        <Button
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
-            app:rv_color="@color/primary_dark"
-            xmlns:app="http://schemas.android.com/apk/res-auto">
+            android:text="Login"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/button_theme"
+            android:textColor="@android:color/white"
+            android:id="@+id/bLogin" />
 
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Login"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:background="@drawable/button_theme"
-                android:textColor="@android:color/white"
-
-                android:id="@+id/bLogin" />
-        </com.andexert.library.RippleView>
-
-        <com.andexert.library.RippleView
-            android:layout_width="wrap_content"
+        <Button
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:rv_color="@color/primary_dark"
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools">
+            android:text="Logout"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:textColor="@android:color/white"
+            android:background="@drawable/button_theme"
+            android:id="@+id/bLogout" />
 
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Logout"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:textColor="@android:color/white"
-                android:background="@drawable/button_theme"
-                android:id="@+id/bLogout" />
 
-        </com.andexert.library.RippleView>
 
         <TextView
             android:layout_width="match_parent"
@@ -76,7 +56,8 @@
             android:layout_marginLeft="10dp"
             android:textSize="14dp"
             android:textColor="@color/primary"
-            android:id="@+id/etSelectDefaultUser" />
+            android:id="@+id/etSelectDefaultUser"
+            />
 
         <ListView
             android:layout_width="match_parent"
@@ -94,7 +75,8 @@
         android:layout_gravity="end|bottom"
         android:layout_marginBottom="@dimen/add_button_margin"
         android:layout_marginEnd="@dimen/add_button_margin"
-        android:layout_marginRight="@dimen/add_button_margin"></include>
+        android:layout_marginRight="@dimen/add_button_margin"
+        ></include>
 </FrameLayout>
 
 

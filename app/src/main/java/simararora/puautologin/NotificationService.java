@@ -31,12 +31,14 @@ public class NotificationService extends IntentService{
         String message = intent.getStringExtra("message");
         boolean showAction = intent.getBooleanExtra("showAction", true);
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
-        builder.setSmallIcon(R.drawable.ic_notification);
-        builder.setContentTitle("PU Auto Login");
-        builder.setContentText(message);
-        builder.setPriority(NotificationCompat.PRIORITY_HIGH);
-        builder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_notification_large));
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
+        .setSmallIcon(R.drawable.ic_notification)
+        .setContentTitle("PU Auto Login")
+        .setContentText(message)
+        .setPriority(NotificationCompat.PRIORITY_HIGH)
+        .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_notification_large))
+        .setDefaults(Notification.DEFAULT_VIBRATE);
+
         if(showAction){
             Intent logoutIntent = new Intent(this, LogoutService.class);
             PendingIntent logoutPendingIntent = PendingIntent.getService(this, 0, logoutIntent, 0);

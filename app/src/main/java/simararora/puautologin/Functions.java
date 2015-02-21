@@ -1,20 +1,17 @@
 package simararora.puautologin;
 
-import android.annotation.TargetApi;
 import android.app.ActivityManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.ConnectivityManager;
-import android.net.Network;
-import android.net.NetworkCapabilities;
-import android.net.NetworkRequest;
-import android.os.Build;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 
 import java.util.List;
 
 /**
  * Created by Simar Arora on 2/4/2015.
- * 
+ *
  */
 public class Functions {
 
@@ -83,20 +80,24 @@ public class Functions {
         return false;
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public static void setNetworkTypeToWifi(Context context) {
-        final ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkRequest.Builder requestBuilder = new NetworkRequest.Builder();
-        requestBuilder.addCapability(NetworkCapabilities.TRANSPORT_WIFI);
-        connectivityManager.registerNetworkCallback(requestBuilder.build(), new ConnectivityManager.NetworkCallback() {
-            @Override
-            public void onAvailable(Network network) {
-                ConnectivityManager.setProcessDefaultNetwork(network);
+    public static boolean isPUCampus(Context context) {
+        WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+        if (wifiManager != null) {
+            WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+            if (wifiInfo != null) {
+                String ssid = wifiInfo.getSSID().toLowerCase();
+                if (ssid.contains("pu@campus")) {
+                    return true;
+                }
             }
-        });
+        }
+        return false;
     }
 
-    public static boolean isLollipop() {
-        return Build.VERSION.SDK_INT >= 21;
+    public static void sendNotification(Context context, String message, boolean showAction){
+        Intent intent = new Intent(context, NotificationService.class);
+        intent.putExtra("message", message);
+        intent.putExtra("showAction", showAction);
+        context.startService(intent);
     }
 }

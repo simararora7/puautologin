@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,8 +29,6 @@ import android.widget.Toast;
 import com.alertdialogpro.AlertDialogPro;
 
 import java.util.ArrayList;
-
-import simararora.puautologin.widget.LoginService;
 
 
 public class MainActivity extends ActionBarActivity implements View.OnClickListener {
@@ -90,20 +89,18 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     }
 
     /**
-     *
-     * @param v
-     * Handles Button Clicks
+     * @param v Handles Button Clicks
      */
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.bLogin:
                 //Start Login Task
-                new LoginTask(MainActivity.this).execute();
+                new LoginTask(MainActivity.this, true).execute();
                 break;
             case R.id.bLogout:
                 //Start Logout Task
-                new LogoutTask(MainActivity.this).execute();
+                new LogoutTask(MainActivity.this, true).execute();
                 break;
         }
     }
@@ -116,7 +113,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     private void showAddDialog() {
         View view;
         final EditText username, password;
-
+        final CheckBox showPassword;
         //Create Dialog Builder
         AlertDialogPro.Builder builder = new AlertDialogPro.Builder(this);
         builder.setTitle("Add User");
@@ -125,6 +122,19 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         view = getLayoutInflater().inflate(R.layout.dialog_add_user, null);
         username = (EditText) view.findViewById(R.id.etUsername);
         password = (EditText) view.findViewById(R.id.etPassword);
+        password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        showPassword = (CheckBox) view.findViewById(R.id.cbShowPassword);
+        showPassword.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                boolean checked = showPassword.isChecked();
+                if (checked) {
+                    password.setInputType(InputType.TYPE_DATETIME_VARIATION_NORMAL);
+                } else {
+                    password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                }
+            }
+        });
         builder.setView(view);
 
         //Set Buttons for Dialog
@@ -167,11 +177,9 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     }
 
     /**
-     *
-     * @param user
-     * Updates the list after user has been added successfully
+     * @param user Updates the list after user has been added successfully
      */
-    public void onSuccessfulAddUser(String user) {
+    private void onSuccessfulAddUser(String user) {
         users.add(user);
         listOfUsers.setAdapter(new UserListAdapter());
         noUserAdded.setVisibility(View.GONE);
@@ -179,19 +187,17 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     }
 
     /**
-     *
-     * @param username
-     * Shows options dialog
-     * Edit
-     * Delete
-     * Change Password
+     * @param username Shows options dialog
+     *                 Edit
+     *                 Delete
+     *                 Change Password
      */
     private void showOptionsDialog(final String username) {
         View view = getLayoutInflater().inflate(R.layout.dialog_options, null);
         ListView optionsList = (ListView) view.findViewById(R.id.lvOptions);
         final AlertDialogPro.Builder builder = new AlertDialogPro.Builder(this);
         optionsList.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, new String[]{
-                "Edit", "Delete", "Change Password"
+                "Edit", "Delete"
         }));
         builder.setView(view);
         final AlertDialogPro dialog = builder.create();
@@ -211,10 +217,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                         MainActivity.this.onDeleteUserConformation(username);
                         dialog.dismiss();
                         break;
-                    case 2:
-                        Toast.makeText(MainActivity.this, "Functionality yet to be added", Toast.LENGTH_SHORT).show();
-                        dialog.dismiss();
-                        break;
                 }
             }
         });
@@ -223,11 +225,9 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     }
 
     /**
-     *
-     * @param username
-     * Updates the list after user has been deleted successfully
+     * @param username Updates the list after user has been deleted successfully
      */
-    public void onDeleteUserConformation(String username) {
+    private void onDeleteUserConformation(String username) {
         users.remove(username);
         if (users.isEmpty()) {
             Functions.disable(this);
@@ -242,19 +242,31 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     }
 
     /**
-     *
-     * @param oldUser
-     * Shows Edit Dialog
+     * @param oldUser Shows Edit Dialog
      */
     private void showEditDialog(final String oldUser) {
         View view;
         final EditText username, password;
+        final CheckBox showPassword;
         AlertDialogPro.Builder builder = new AlertDialogPro.Builder(this);
         builder.setTitle("Edit User");
         view = getLayoutInflater().inflate(R.layout.dialog_edit_user, null);
         username = (EditText) view.findViewById(R.id.etUsername);
         password = (EditText) view.findViewById(R.id.etPassword);
+        password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
         username.setText(oldUser);
+        showPassword = (CheckBox) view.findViewById(R.id.cbShowPassword);
+        showPassword.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                boolean checked = showPassword.isChecked();
+                if (checked) {
+                    password.setInputType(InputType.TYPE_DATETIME_VARIATION_NORMAL);
+                } else {
+                    password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                }
+            }
+        });
         builder.setView(view);
         builder.setPositiveButton("Edit", new DialogInterface.OnClickListener() {
             @Override
@@ -284,24 +296,22 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     }
 
     /**
-     *
      * @param oldUsername
-     * @param newUsername
-     * Updates list after user has been edited successfully
+     * @param newUsername Updates list after user has been edited successfully
      */
-    public void onEditUserConformation(String oldUsername, String newUsername) {
+    private void onEditUserConformation(String oldUsername, String newUsername) {
+        int x = users.indexOf(oldUsername);
         users.remove(oldUsername);
-        users.add(newUsername);
-        Functions.setActiveUser(this, newUsername);
+        users.add(x, newUsername);
+        if (Functions.getActiveUserName(this).equals(oldUsername))
+            Functions.setActiveUser(this, newUsername);
         listOfUsers.setAdapter(new UserListAdapter());
         Toast.makeText(this, "Edit Successful", Toast.LENGTH_SHORT).show();
     }
 
     /**
-     *
      * @param menu
-     * @return
-     * Creates the menu for this activity
+     * @return Creates the menu for this activity
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -310,10 +320,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     }
 
     /**
-     *
      * @param item
-     * @return
-     * Handles Menu Item Clicks
+     * @return Handles Menu Item Clicks
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -406,7 +414,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         }
 
         /**
-         *
          * @return number of users
          */
         @Override
@@ -415,7 +422,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         }
 
         /**
-         *
          * @param position
          * @return user at the position
          */
@@ -425,7 +431,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         }
 
         /**
-         *
          * @param position
          * @return id = position
          */
@@ -436,6 +441,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
         /**
          * Creates view for single list item
+         *
          * @param position
          * @param convertView
          * @param parent

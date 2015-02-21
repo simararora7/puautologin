@@ -4,23 +4,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingLeft="25dp"
-    android:paddingRight="25dp"
-    >
+    android:paddingRight="25dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginTop="15dp"
-        android:layout_marginBottom="10dp"
-        >
+        android:layout_marginBottom="10dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Username"
-            android:textSize="14dp"
-            />
+            android:textSize="14dp" />
 
         <EditText
             android:layout_width="match_parent"
@@ -29,8 +26,7 @@
             android:layout_marginLeft="8dp"
             android:singleLine="true"
             android:imeOptions="actionNext"
-            android:id="@+id/etUsername"
-            />
+            android:id="@+id/etUsername" />
     </LinearLayout>
 
     <LinearLayout
@@ -38,15 +34,13 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
 
-        android:layout_marginTop="7dp"
-        >
+        android:layout_marginTop="7dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Password"
-            android:textSize="14dp"
-            />
+            android:textSize="14dp" />
 
         <EditText
             android:layout_width="match_parent"
@@ -57,8 +51,28 @@
             android:singleLine="true"
             android:hint="(unchanged)"
             android:layout_marginLeft="8dp"
-            android:imeOptions="actionDone"
-            />
+            android:imeOptions="actionDone" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="7dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Password"
+            android:textSize="14dp"
+            android:visibility="invisible" />
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Show Password"
+            android:checked="false"
+            android:id="@+id/cbShowPassword" />
     </LinearLayout>
 
 
