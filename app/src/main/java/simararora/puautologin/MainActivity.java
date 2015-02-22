@@ -96,11 +96,11 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         switch (v.getId()) {
             case R.id.bLogin:
                 //Start Login Task
-                new LoginTask(MainActivity.this, true).execute();
+                new LoginTask(MainActivity.this, false).execute();
                 break;
             case R.id.bLogout:
                 //Start Logout Task
-                new LogoutTask(MainActivity.this, true).execute();
+                new LogoutTask(MainActivity.this).execute();
                 break;
         }
     }

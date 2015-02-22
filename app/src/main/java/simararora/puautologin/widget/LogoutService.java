@@ -25,17 +25,7 @@ public class LogoutService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-        if ((networkInfo != null) && (networkInfo.getType() == ConnectivityManager.TYPE_WIFI) && (networkInfo.getState().equals(NetworkInfo.State.CONNECTED))) {
-            if (Functions.isPUCampus(this)) {
-                new LogoutTask(this).execute();
-            }else{
-                Functions.sendNotification(this, "Not Connected To PU@Campus", false);
-            }
-        }else{
-            Functions.sendNotification(this, "Not Connected To Wifi", false);
-        }
+        new LogoutTask(this).execute();
         this.stopSelf();
     }
 }

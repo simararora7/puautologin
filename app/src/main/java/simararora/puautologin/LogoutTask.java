@@ -1,9 +1,11 @@
 package simararora.puautologin;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.util.Log;
 
 import java.io.BufferedReader;
@@ -15,7 +17,6 @@ import java.net.URL;
 
 /**
  * Created by Simar Arora on 2/3/2015.
- *
  */
 public class LogoutTask extends AsyncTask<Void, String, Void> {
 
@@ -24,20 +25,14 @@ public class LogoutTask extends AsyncTask<Void, String, Void> {
 
     public LogoutTask(Context context) {
         this.context = context;
-
-    }
-
-    @SuppressWarnings("UnusedParameters")
-    public LogoutTask(Context context, boolean fromMainActivity){
-        this.context = context;
-        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-        if ((networkInfo != null) && (networkInfo.getType() == ConnectivityManager.TYPE_WIFI) && (networkInfo.getState().equals(NetworkInfo.State.CONNECTED))) {
-            if (!Functions.isPUCampus(context)){
+        if (Functions.isConnectedToWifi(context)) {
+            if (!Functions.isPUCampus(context)) {
+                if (Build.VERSION.SDK_INT >= 21)
+                    ConnectivityManager.setProcessDefaultNetwork(null);
                 Functions.sendNotification(context, "Not Connected To PU@Campus", false);
                 this.cancel(true);
             }
-        }else{
+        } else {
             Functions.sendNotification(context, "Not Connected To Wifi", false);
             this.cancel(true);
         }

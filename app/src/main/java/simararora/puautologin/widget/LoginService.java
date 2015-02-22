@@ -27,17 +27,7 @@ public class LoginService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         if (!Functions.isInitialised(this))
             return;
-        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-        if ((networkInfo != null) && (networkInfo.getType() == ConnectivityManager.TYPE_WIFI) && (networkInfo.getState().equals(NetworkInfo.State.CONNECTED))) {
-            if (Functions.isPUCampus(this)){
-                new LoginTask(this).execute();
-            }else{
-                Functions.sendNotification(this, "Not Connected To PU@Campus", false);
-            }
-        }else{
-            Functions.sendNotification(this, "Not Connected To Wifi", false);
-        }
+        new LoginTask(this, false).execute();
         this.stopSelf();
     }
 }

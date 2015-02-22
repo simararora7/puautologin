@@ -1,10 +1,16 @@
 package simararora.puautologin;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
+import android.net.NetworkRequest;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.util.Log;
+import android.view.inputmethod.BaseInputConnection;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -19,23 +25,20 @@ public class LoginTask extends AsyncTask<Void, String, Void> {
     private Context context;
     private static final String loginURL = "https://securelogin.arubanetworks.com/cgi-bin/login?cmd=login";
 
-    public LoginTask(Context context) {
+    public LoginTask(Context context, boolean fromBroadcastReceiver) {
         this.context = context;
-    }
-
-    @SuppressWarnings("UnusedParameters")
-    public LoginTask(Context context, boolean fromMainActivity){
-        this.context = context;
-        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-        if ((networkInfo != null) && (networkInfo.getType() == ConnectivityManager.TYPE_WIFI) && (networkInfo.getState().equals(NetworkInfo.State.CONNECTED))) {
-            if (!Functions.isPUCampus(context)){
-                Functions.sendNotification(context, "Not Connected To PU@Campus", false);
+        if(!fromBroadcastReceiver){
+            if(Functions.isConnectedToWifi(context)){
+                if(!Functions.isPUCampus(context)){
+                    if (Build.VERSION.SDK_INT >= 21)
+                        ConnectivityManager.setProcessDefaultNetwork(null);
+                    Functions.sendNotification(context, "Not Connected To PU@Campus", false);
+                    this.cancel(true);
+                }
+            }else{
+                Functions.sendNotification(context, "Not Connected To Wifi", false);
                 this.cancel(true);
             }
-        }else{
-            Functions.sendNotification(context, "Not Connected To Wifi", false);
-            this.cancel(true);
         }
     }
 

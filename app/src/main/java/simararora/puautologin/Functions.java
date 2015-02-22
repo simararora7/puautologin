@@ -4,14 +4,17 @@ import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.os.Build;
 
 import java.util.List;
 
 /**
  * Created by Simar Arora on 2/4/2015.
- *
  */
 public class Functions {
 
@@ -94,10 +97,36 @@ public class Functions {
         return false;
     }
 
-    public static void sendNotification(Context context, String message, boolean showAction){
+    public static void sendNotification(Context context, String message, boolean showAction) {
         Intent intent = new Intent(context, NotificationService.class);
         intent.putExtra("message", message);
         intent.putExtra("showAction", showAction);
         context.startService(intent);
+    }
+
+    public static boolean isConnectedToWifi(Context context) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if(Build.VERSION.SDK_INT >= 21){
+            Network[] networks = connectivityManager.getAllNetworks();
+            NetworkInfo networkInfo;
+            Network network;
+            for (int i = 0; i < networks.length; i++) {
+                network = networks[i];
+                networkInfo = connectivityManager.getNetworkInfo(network);
+                if ((networkInfo.getType() == ConnectivityManager.TYPE_WIFI) && (networkInfo.getState().equals(NetworkInfo.State.CONNECTED))) {
+                   ConnectivityManager.setProcessDefaultNetwork(network);
+                    return true;
+                }
+            }
+            return false;
+
+        }else{
+            NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+            if ((networkInfo != null) && (networkInfo.getType() == ConnectivityManager.TYPE_WIFI) && (networkInfo.getState().equals(NetworkInfo.State.CONNECTED))) {
+                return true;
+            } else {
+                return false;
+            }
+        }
     }
 }
