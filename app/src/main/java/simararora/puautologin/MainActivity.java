@@ -129,7 +129,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 boolean checked = showPassword.isChecked();
                 if (checked) {
-                    password.setInputType(InputType.TYPE_DATETIME_VARIATION_NORMAL);
+                    password.setInputType(InputType.TYPE_CLASS_TEXT);
                 } else {
                     password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                 }
@@ -170,7 +170,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
             }
         });
-        builder.setCancelable(false);
 
         //Show Dialog
         builder.create().show();
@@ -261,7 +260,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 boolean checked = showPassword.isChecked();
                 if (checked) {
-                    password.setInputType(InputType.TYPE_DATETIME_VARIATION_NORMAL);
+                    password.setInputType(InputType.TYPE_CLASS_TEXT);
                 } else {
                     password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                 }
@@ -291,7 +290,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             public void onClick(DialogInterface dialog, int which) {
             }
         });
-        builder.setCancelable(false);
         builder.create().show();
     }
 
@@ -345,7 +343,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     private void showAboutDialog() {
         AlertDialogPro.Builder builder = new AlertDialogPro.Builder(this);
         builder.setTitle("About");
-        builder.setMessage("This application is created by Simarpreet Singh Arora, CSE, 3rd Year, UIET.");
+        builder.setMessage("This application is developed by Simarpreet Singh Arora, CSE, 3rd Year, UIET.\nIcons Designed By Naveen Singh, CSE, 3rd Year, UIET.");
         builder.setCancelable(true);
         builder.setPositiveButton("Back", null);
         builder.create().show();

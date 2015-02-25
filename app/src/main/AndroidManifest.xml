@@ -29,7 +29,7 @@
 
         <receiver android:name=".WifiConnectedReceiver">
             <intent-filter>
-                <action android:name="android.net.wifi.STATE_CHANGE" />
+                <action android:name="android.net.wifi.STATE_CHANGE"/>
             </intent-filter>
         </receiver>
 

@@ -1,16 +1,10 @@
 package simararora.puautologin;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.net.ConnectivityManager;
-import android.net.Network;
-import android.net.NetworkCapabilities;
-import android.net.NetworkInfo;
-import android.net.NetworkRequest;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.util.Log;
-import android.view.inputmethod.BaseInputConnection;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -36,10 +30,12 @@ public class LoginTask extends AsyncTask<Void, String, Void> {
                     this.cancel(true);
                 }
             }else{
+
                 Functions.sendNotification(context, "Not Connected To Wifi", false);
                 this.cancel(true);
             }
         }
+        Log.d("Simar", "Constructor");
     }
 
     @Override

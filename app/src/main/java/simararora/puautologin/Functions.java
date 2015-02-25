@@ -21,6 +21,7 @@ public class Functions {
     private static final String KEY_INITIALISE = "initialBit";
     private static final String KEY_ACTIVE_USER = "activeUser";
     private static final String PREFERENCES_NAME = "puSharedPreferences";
+    private static final String WIFI_KEY = "wifiKey";
 
     public static boolean isInitialised(Context context) {
         String str = readFromSharedPreferences(context, KEY_INITIALISE);
@@ -106,27 +107,36 @@ public class Functions {
 
     public static boolean isConnectedToWifi(Context context) {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        if(Build.VERSION.SDK_INT >= 21){
+        if (Build.VERSION.SDK_INT >= 21) {
             Network[] networks = connectivityManager.getAllNetworks();
             NetworkInfo networkInfo;
-            Network network;
-            for (int i = 0; i < networks.length; i++) {
-                network = networks[i];
+            for (Network network : networks) {
                 networkInfo = connectivityManager.getNetworkInfo(network);
                 if ((networkInfo.getType() == ConnectivityManager.TYPE_WIFI) && (networkInfo.getState().equals(NetworkInfo.State.CONNECTED))) {
-                   ConnectivityManager.setProcessDefaultNetwork(network);
+                    ConnectivityManager.setProcessDefaultNetwork(network);
                     return true;
                 }
             }
             return false;
 
-        }else{
+        } else {
             NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-            if ((networkInfo != null) && (networkInfo.getType() == ConnectivityManager.TYPE_WIFI) && (networkInfo.getState().equals(NetworkInfo.State.CONNECTED))) {
-                return true;
-            } else {
-                return false;
-            }
+            return (networkInfo != null) && (networkInfo.getType() == ConnectivityManager.TYPE_WIFI) && (networkInfo.getState().equals(NetworkInfo.State.CONNECTED));
         }
+    }
+
+    public static boolean isDisconnectedFlagSet(Context context) {
+        String str = readFromSharedPreferences(context, WIFI_KEY);
+        if (str.equals(""))
+            return true;
+        int x = Integer.parseInt(str);
+        if (x == 1) {
+            return true;
+        }
+        return false;
+    }
+
+    public static void setDisconnectedFromPUCampusFlag(Context context, int value) {
+        writeToSharedPreferences(context, WIFI_KEY, value + "");
     }
 }

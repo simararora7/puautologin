@@ -17,10 +17,8 @@ public class WidgetReceiver extends AppWidgetProvider {
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
-        int appWidgetId;
         RemoteViews views;
-        for (int appWidgetId1 : appWidgetIds) {
-            appWidgetId = appWidgetId1;
+        for (int appWidgetId : appWidgetIds) {
             views = new RemoteViews(context.getPackageName(), R.layout.widget);
             Intent loginIntent = new Intent(context, LoginService.class);
             PendingIntent loginPendingIntent = PendingIntent.getService(context, 0, loginIntent, 0);

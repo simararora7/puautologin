@@ -1,12 +1,8 @@
 package simararora.puautologin.widget;
 
 import android.app.IntentService;
-import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 
-import simararora.puautologin.Functions;
 import simararora.puautologin.LogoutTask;
 
 /**

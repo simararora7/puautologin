@@ -1,9 +1,7 @@
 package simararora.puautologin;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.util.Log;
@@ -17,6 +15,7 @@ import java.net.URL;
 
 /**
  * Created by Simar Arora on 2/3/2015.
+ *
  */
 public class LogoutTask extends AsyncTask<Void, String, Void> {
 

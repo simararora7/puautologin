@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkInfo;
+import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.util.Log;
 
@@ -25,14 +26,20 @@ public class WifiConnectedReceiver extends BroadcastReceiver {
         debug("Start");
         if (!Functions.isInitialised(context))
             return;
+        debug("initialised");
         connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         buildVersion = Build.VERSION.SDK_INT;
         if (isConnectedToWiFi()) {
+            debug("Connected");
             if (buildVersion < 21) {
                 if (Functions.isPUCampus(context)) {
-                    new LoginTask(context, true).execute();
+                    debug("PUCampus");
+                    if (Functions.isDisconnectedFlagSet(context)) {
+                        new LoginTask(context, true).execute();
+                        Functions.setDisconnectedFromPUCampusFlag(context, 0);
+                    }
                 } else {
-                    Functions.sendNotification(context, "Not Connected To PU@Campus", false);
+                    Functions.setDisconnectedFromPUCampusFlag(context, 1);
                 }
             } else {
                 ConnectivityManager.setProcessDefaultNetwork(network);
@@ -40,19 +47,9 @@ public class WifiConnectedReceiver extends BroadcastReceiver {
                     new LoginTask(context, true).execute();
                 }
             }
+        } else {
+            Functions.setDisconnectedFromPUCampusFlag(context, 1);
         }
-
-
-//        debug("Initialised");
-//        Functions.setNetworkTypeToWiFi(context);
-//        new LoginTask(context).execute();
-//        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-//        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-//        if ((networkInfo != null) && (networkInfo.getType() == ConnectivityManager.TYPE_WIFI) && (networkInfo.getState().equals(NetworkInfo.State.CONNECTED))) {
-//            if (Functions.isPUCampus(context)){
-//                new LoginTask(context).execute();
-//            }
-//        }
     }
 
     private void debug(String message) {
@@ -63,16 +60,12 @@ public class WifiConnectedReceiver extends BroadcastReceiver {
     private boolean isConnectedToWiFi() {
         if (buildVersion < 21) {
             NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-            if ((networkInfo != null) && (networkInfo.getType() == ConnectivityManager.TYPE_WIFI) && (networkInfo.getState().equals(NetworkInfo.State.CONNECTED))) {
-                return true;
-            } else {
-                return false;
-            }
+            return (networkInfo != null) && (networkInfo.getType() == ConnectivityManager.TYPE_WIFI) && (networkInfo.getState().equals(NetworkInfo.State.CONNECTED));
         } else {
             Network[] networks = connectivityManager.getAllNetworks();
             NetworkInfo networkInfo;
-            for (int i = 0; i < networks.length; i++) {
-                network = networks[i];
+            for (Network network1 : networks) {
+                network = network1;
                 networkInfo = connectivityManager.getNetworkInfo(network);
                 if ((networkInfo.getType() == ConnectivityManager.TYPE_WIFI) && (networkInfo.getState().equals(NetworkInfo.State.CONNECTED))) {
                     return true;
