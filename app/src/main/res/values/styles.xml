@@ -14,4 +14,9 @@
         <item name="android:divider">@color/divider</item>
     </style>
 
+    <style name="dialog_animation">
+        <item name="android:windowEnterAnimation">@anim/slide_up_dialog</item>
+        <item name="android:windowExitAnimation">@anim/slide_down_dialog</item>
+    </style>
+
 </resources>

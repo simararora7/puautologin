@@ -14,9 +14,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -37,6 +40,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     private TextView noUserAdded, selectDefaultUser;
     private ListView listOfUsers;
     private boolean doubleBackToExitPressedOnce;
+    private LinearLayout listViewLayout;
+    private Button loginButton, logoutButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +52,10 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         setSupportActionBar((android.support.v7.widget.Toolbar) findViewById(R.id.toolbar));
 
         //Initialise login and logout buttons
-        findViewById(R.id.bLogin).setOnClickListener(this);
-        findViewById(R.id.bLogout).setOnClickListener(this);
+        loginButton = (Button) findViewById(R.id.bLogin);
+        loginButton.setOnClickListener(this);
+        logoutButton = (Button) findViewById(R.id.bLogout);
+        logoutButton.setOnClickListener(this);
 
         //Get users from database
         UserDatabase userDatabase = new UserDatabase(this);
@@ -86,6 +93,16 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             }
         });
 
+        loginButton.startAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_left));
+        loginButton.setVisibility(View.VISIBLE);
+
+        logoutButton.startAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_right));
+        logoutButton.setVisibility(View.VISIBLE);
+
+        listViewLayout = (LinearLayout) findViewById(R.id.llListLayout);
+        listViewLayout.startAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_up));
+        //listViewLayout.setVisibility(View.VISIBLE);
+        addUser.startAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_left));
     }
 
     /**
@@ -130,8 +147,10 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 boolean checked = showPassword.isChecked();
                 if (checked) {
                     password.setInputType(InputType.TYPE_CLASS_TEXT);
+                    password.setSelection(password.length());
                 } else {
                     password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    password.setSelection(password.length());
                 }
             }
         });
@@ -172,7 +191,9 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         });
 
         //Show Dialog
-        builder.create().show();
+        AlertDialogPro dialog = builder.create();
+        dialog.getWindow().getAttributes().windowAnimations = R.style.dialog_animation;
+        dialog.show();
     }
 
     /**
@@ -220,6 +241,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             }
         });
         dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        dialog.getWindow().getAttributes().windowAnimations = R.style.dialog_animation;
         dialog.show();
     }
 
@@ -261,8 +283,10 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 boolean checked = showPassword.isChecked();
                 if (checked) {
                     password.setInputType(InputType.TYPE_CLASS_TEXT);
+                    password.setSelection(password.length());
                 } else {
                     password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    password.setSelection(password.length());
                 }
             }
         });
@@ -290,7 +314,10 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             public void onClick(DialogInterface dialog, int which) {
             }
         });
-        builder.create().show();
+
+        AlertDialogPro dialog = builder.create();
+        dialog.getWindow().getAttributes().windowAnimations = R.style.dialog_animation;
+        dialog.show();
     }
 
     /**
@@ -346,7 +373,9 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         builder.setMessage("This application is developed by Simarpreet Singh Arora, CSE, 3rd Year, UIET.\nIcons Designed By Naveen Singh, CSE, 3rd Year, UIET.");
         builder.setCancelable(true);
         builder.setPositiveButton("Back", null);
-        builder.create().show();
+        AlertDialogPro dialog = builder.create();
+        dialog.getWindow().getAttributes().windowAnimations = R.style.dialog_animation;
+        dialog.show();
     }
 
     /**
