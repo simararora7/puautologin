@@ -14,6 +14,7 @@ import simararora.puautologin.widget.LogoutService;
 
 /**
  * Created by Simar Arora on 2/14/2015.
+ * This App is Licensed under GNU General Public License. A copy of this license can be found in the root of this project.
  *
  */
 public class NotificationService extends IntentService{

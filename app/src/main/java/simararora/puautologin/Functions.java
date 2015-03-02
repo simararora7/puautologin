@@ -15,6 +15,7 @@ import java.util.List;
 
 /**
  * Created by Simar Arora on 2/4/2015.
+ * This App is Licensed under GNU General Public License. A copy of this license can be found in the root of this project.
  */
 public class Functions {
 
@@ -130,10 +131,7 @@ public class Functions {
         if (str.equals(""))
             return true;
         int x = Integer.parseInt(str);
-        if (x == 1) {
-            return true;
-        }
-        return false;
+        return x == 1;
     }
 
     public static void setDisconnectedFromPUCampusFlag(Context context, int value) {

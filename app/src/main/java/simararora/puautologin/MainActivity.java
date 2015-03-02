@@ -32,7 +32,11 @@ import com.alertdialogpro.AlertDialogPro;
 
 import java.util.ArrayList;
 
-
+/**
+ * Created by Simar Arora on 2/3/2015.
+ * This App is Licensed under GNU General Public License. A copy of this license can be found in the root of this project.
+ *
+ */
 public class MainActivity extends ActionBarActivity implements View.OnClickListener {
 
     private ArrayList<String> users;
@@ -367,7 +371,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     private void showAboutDialog() {
         AlertDialogPro.Builder builder = new AlertDialogPro.Builder(this);
         builder.setTitle("About");
-        builder.setMessage("This application is developed by Simarpreet Singh Arora, CSE, 3rd Year, UIET.\nIcons Designed By Naveen Singh, CSE, 3rd Year, UIET.");
+        builder.setMessage("This application is developed by Simarpreet Singh Arora, CSE, 3rd Year, UIET.\n\nIcons and Feature Graphic Designed By Naveen Singh, CSE, 3rd Year, UIET.\n\nOpen Source Libraries Used:\n\tAlertDialogPro\n");
         builder.setCancelable(true);
         builder.setPositiveButton("Back", null);
         AlertDialogPro dialog = builder.create();

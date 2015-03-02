@@ -14,6 +14,11 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+/**
+ * Created by Simar Arora on 2/3/2015.
+ * This App is Licensed under GNU General Public License. A copy of this license can be found in the root of this project.
+ *
+ */
 public class LoginTask extends AsyncTask<Void, String, Void> {
 
     private Context context;

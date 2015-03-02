@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 /**
  * Created by Simar Arora on 2/4/2015.
- *
+ * This App is Licensed under GNU General Public License. A copy of this license can be found in the root of this project.
  */
 public class UserDatabase {
     private static final String KEY_USER_NAME = "userName";

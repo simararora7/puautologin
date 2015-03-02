@@ -7,12 +7,12 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkInfo;
-import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.util.Log;
 
 /**
  * Created by Simar Arora on 2/3/2015.
+ * This App is Licensed under GNU General Public License. A copy of this license can be found in the root of this project.
  */
 
 public class WifiConnectedReceiver extends BroadcastReceiver {
