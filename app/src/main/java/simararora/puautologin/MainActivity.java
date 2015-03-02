@@ -14,7 +14,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -40,8 +39,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     private TextView noUserAdded, selectDefaultUser;
     private ListView listOfUsers;
     private boolean doubleBackToExitPressedOnce;
-    private LinearLayout listViewLayout;
-    private Button loginButton, logoutButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,9 +49,9 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         setSupportActionBar((android.support.v7.widget.Toolbar) findViewById(R.id.toolbar));
 
         //Initialise login and logout buttons
-        loginButton = (Button) findViewById(R.id.bLogin);
+        Button loginButton = (Button) findViewById(R.id.bLogin);
         loginButton.setOnClickListener(this);
-        logoutButton = (Button) findViewById(R.id.bLogout);
+        Button logoutButton = (Button) findViewById(R.id.bLogout);
         logoutButton.setOnClickListener(this);
 
         //Get users from database
@@ -99,7 +96,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         logoutButton.startAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_right));
         logoutButton.setVisibility(View.VISIBLE);
 
-        listViewLayout = (LinearLayout) findViewById(R.id.llListLayout);
+        LinearLayout listViewLayout = (LinearLayout) findViewById(R.id.llListLayout);
         listViewLayout.startAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_up));
         //listViewLayout.setVisibility(View.VISIBLE);
         addUser.startAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_left));
