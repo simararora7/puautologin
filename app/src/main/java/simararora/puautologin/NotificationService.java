@@ -19,19 +19,31 @@ import simararora.puautologin.widget.LogoutService;
  */
 public class NotificationService extends IntentService{
 
+    /**
+     * Default Constructor
+     * @param name
+     */
     public NotificationService(String name) {
         super(name);
     }
 
+    /**
+     * Empty Required Constructor
+     */
     public NotificationService(){
         super("NotificationService");
     }
 
     @Override
     protected void onHandleIntent(Intent intent) {
+
+        // message to show in the notification
         String message = intent.getStringExtra("message");
+
+        //show logout button in notification or not
         boolean showAction = intent.getBooleanExtra("showAction", true);
 
+        //Create a builder for notification
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
         .setSmallIcon(R.drawable.ic_notification)
         .setContentTitle("PU Auto Login")
@@ -40,12 +52,14 @@ public class NotificationService extends IntentService{
         .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_notification_large))
         .setDefaults(Notification.DEFAULT_VIBRATE);
 
+        //Initialise Logout action in notification builder
         if(showAction){
             Intent logoutIntent = new Intent(this, LogoutService.class);
             PendingIntent logoutPendingIntent = PendingIntent.getService(this, 0, logoutIntent, 0);
             builder.addAction(R.drawable.action_logout, "Logout", logoutPendingIntent);
         }
 
+        // set Notification intent
         Intent in = new Intent(this, MainActivity.class);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
         stackBuilder.addParentStack(MainActivity.class);
@@ -53,9 +67,12 @@ public class NotificationService extends IntentService{
         PendingIntent pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
         builder.setContentIntent(pendingIntent);
 
+        // Get an instance of notificaton manager and send notification
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         Notification notification = builder.build();
         notification.defaults |= Notification.DEFAULT_VIBRATE;
+
+        //First Argument 0 = FLAG_UPDATE
         notificationManager.notify(0, notification);
     }
 }

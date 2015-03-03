@@ -5,7 +5,7 @@ android {
         config {
             keyAlias 'puautologin'
             keyPassword 'awesum77'
-            storeFile file('D:/AndroidstudioProjects/KeyStores/uietwebportal.jks')
+            storeFile file('D:/AndroidstudioProjects/KeyStores/puautologin.jks')
             storePassword 'awesum77'
         }
     }

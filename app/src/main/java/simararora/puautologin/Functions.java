@@ -24,6 +24,12 @@ public class Functions {
     private static final String PREFERENCES_NAME = "puSharedPreferences";
     private static final String WIFI_KEY = "wifiKey";
 
+    /**
+     * Check if user has initialised the app by entering at least one username password pair
+     *
+     * @param context
+     * @return initialised
+     */
     public static boolean isInitialised(Context context) {
         String str = readFromSharedPreferences(context, KEY_INITIALISE);
         switch (str) {
@@ -34,22 +40,48 @@ public class Functions {
         return true;
     }
 
+    /**
+     * Set initialised flag in shared preferences
+     *
+     * @param context
+     */
     public static void initialise(Context context) {
         writeToSharedPreferences(context, KEY_INITIALISE, 1 + "");
     }
 
+    /**
+     * Reset initialised flag in shared preferences
+     *
+     * @param context
+     */
     public static void disable(Context context) {
         writeToSharedPreferences(context, KEY_INITIALISE, 0 + "");
     }
 
+    /**
+     * Retrieve default username from shared preferences
+     * @param context
+     * @return default username selected by username
+     */
     public static String getActiveUserName(Context context) {
         return readFromSharedPreferences(context, KEY_ACTIVE_USER);
     }
 
+    /**
+     * Set default user in shared preferences
+     * @param context
+     * @param userName
+     */
     public static void setActiveUser(Context context, String userName) {
         writeToSharedPreferences(context, KEY_ACTIVE_USER, userName);
     }
 
+    /**
+     * Return password for the username provided
+     * @param context
+     * @param userName
+     * @return
+     */
     public static String getPasswordForUserName(Context context, String userName) {
         UserDatabase userDatabase = new UserDatabase(context);
         userDatabase.open();
@@ -58,11 +90,23 @@ public class Functions {
         return password;
     }
 
+    /**
+     * Read from shared preferences
+     * @param context
+     * @param key
+     * @return
+     */
     private static String readFromSharedPreferences(Context context, String key) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREFERENCES_NAME, 0);
         return sharedPreferences.getString(key, "");
     }
 
+    /**
+     * Write To Shared Preferences
+     * @param context
+     * @param key
+     * @param value
+     */
     private static void writeToSharedPreferences(Context context, String key, String value) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREFERENCES_NAME, 0);
         SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
@@ -70,6 +114,11 @@ public class Functions {
         sharedPreferencesEditor.apply();
     }
 
+    /**
+     * Check if app is on foreground
+     * @param context
+     * @return
+     */
     public static boolean isAppOnForeground(Context context) {
         ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         List<ActivityManager.RunningAppProcessInfo> appProcesses = activityManager.getRunningAppProcesses();
@@ -85,6 +134,11 @@ public class Functions {
         return false;
     }
 
+    /**
+     * Check if current SSID is PU@Campus
+     * @param context
+     * @return
+     */
     public static boolean isPUCampus(Context context) {
         WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
         if (wifiManager != null) {
@@ -99,6 +153,12 @@ public class Functions {
         return false;
     }
 
+    /**
+     * Send Notification
+     * @param context
+     * @param message
+     * @param showAction
+     */
     public static void sendNotification(Context context, String message, boolean showAction) {
         Intent intent = new Intent(context, NotificationService.class);
         intent.putExtra("message", message);
@@ -106,6 +166,11 @@ public class Functions {
         context.startService(intent);
     }
 
+    /**
+     * Check if Wifi is connected
+     * @param context
+     * @return
+     */
     public static boolean isConnectedToWifi(Context context) {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (Build.VERSION.SDK_INT >= 21) {

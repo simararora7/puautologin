@@ -4,8 +4,6 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Build;
-import android.util.Log;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,6 +23,8 @@ public class LogoutTask extends AsyncTask<Void, String, Void> {
 
     public LogoutTask(Context context) {
         this.context = context;
+
+        //Check if Wifi is connected
         if (Functions.isConnectedToWifi(context)) {
             if (!Functions.isPUCampus(context)) {
                 if (Build.VERSION.SDK_INT >= 21)
@@ -40,16 +40,19 @@ public class LogoutTask extends AsyncTask<Void, String, Void> {
 
     @Override
     protected Void doInBackground(Void... params) {
-        Log.d("Simar", "Logout");
+
         HttpURLConnection connection = null;
         InputStream inputStream = null;
         BufferedReader bufferedReader = null;
         try {
+            //Set up Connection
             URL url = new URL(logoutURL);
             connection = (HttpURLConnection) url.openConnection();
             inputStream = connection.getInputStream();
             bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
             String line;
+
+            //Check for result
             while ((line = bufferedReader.readLine()) != null) {
                 if (line.contains("Logout")) {
                     publishProgress("Logout Successful");
@@ -61,8 +64,10 @@ public class LogoutTask extends AsyncTask<Void, String, Void> {
             }
         } catch (Exception ignored) {
         } finally {
+            //Close Connection
             if (connection != null)
                 connection.disconnect();
+            //Close InputStream
             if (inputStream != null) {
                 try {
                     inputStream.close();
@@ -70,6 +75,7 @@ public class LogoutTask extends AsyncTask<Void, String, Void> {
                     e.printStackTrace();
                 }
             }
+            //Close BufferedReader
             if (bufferedReader != null) {
                 try {
                     bufferedReader.close();
@@ -84,6 +90,8 @@ public class LogoutTask extends AsyncTask<Void, String, Void> {
     @Override
     protected void onProgressUpdate(String... values) {
         super.onProgressUpdate(values);
+
+        //Send Notification
         Functions.sendNotification(context, values[0], false);
     }
 }

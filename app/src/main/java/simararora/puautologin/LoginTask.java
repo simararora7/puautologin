@@ -43,17 +43,29 @@ public class LoginTask extends AsyncTask<Void, String, Void> {
         Log.d("Simar", "Constructor");
     }
 
+    /**
+     * Performed on background thread
+     * @param params
+     * @return result in onPostExecute()
+     */
     @Override
     protected Void doInBackground(Void... params) {
-        Log.d("Simar", "Login");
+
+        //Get Active Username and Password
         String userName = Functions.getActiveUserName(context);
         String password = Functions.getPasswordForUserName(context, userName);
+
+        //Post Parameters
         String urlParameters = "user=" + userName + "&password=" + password;
+
         HttpURLConnection connection = null;
         InputStream inputStream = null;
         BufferedReader bufferedReader = null;
+
         try {
             URL url = new URL(loginURL);
+
+            //Open Connection and define its properties
             connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("POST");
             connection.setRequestProperty("Content-Type",
@@ -67,17 +79,20 @@ public class LoginTask extends AsyncTask<Void, String, Void> {
             connection.setDoInput(true);
             connection.setDoOutput(true);
 
+            //Set output stream for post parameters
             DataOutputStream dataOutputStream = new DataOutputStream(
                     connection.getOutputStream());
             dataOutputStream.writeBytes(urlParameters);
             dataOutputStream.flush();
             dataOutputStream.close();
 
+            //Get InputStream from connection
             inputStream = connection.getInputStream();
             bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
 
             String line;
 
+            //Check for Result and publish progress accordingly
             while ((line = bufferedReader.readLine()) != null) {
                 if (line.contains("External Welcome Page")) {
                     publishProgress("Login Successful", "true");
@@ -93,8 +108,10 @@ public class LoginTask extends AsyncTask<Void, String, Void> {
 
         } catch (Exception ignored) {
         } finally {
+            //Close Connection
             if (connection != null)
                 connection.disconnect();
+            //Close InputStream
             if (inputStream != null) {
                 try {
                     inputStream.close();
@@ -102,6 +119,7 @@ public class LoginTask extends AsyncTask<Void, String, Void> {
                     e.printStackTrace();
                 }
             }
+            //Close BufferedReader
             if (bufferedReader != null) {
                 try {
                     bufferedReader.close();
@@ -113,6 +131,10 @@ public class LoginTask extends AsyncTask<Void, String, Void> {
         return null;
     }
 
+    /**
+     * Publish Progress
+     * @param values
+     */
     @Override
     protected void onProgressUpdate(String... values) {
         super.onProgressUpdate(values);

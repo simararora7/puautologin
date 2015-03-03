@@ -8,7 +8,6 @@ import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkInfo;
 import android.os.Build;
-import android.util.Log;
 
 /**
  * Created by Simar Arora on 2/3/2015.
@@ -23,18 +22,25 @@ public class WifiConnectedReceiver extends BroadcastReceiver {
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onReceive(Context context, Intent intent) {
-        debug("Start");
+
+        // Check if user has set up the app, else return
         if (!Functions.isInitialised(context))
             return;
-        debug("initialised");
+
         connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         buildVersion = Build.VERSION.SDK_INT;
+
+        //Check if the state chang in wifi is that wifi has been connected
         if (isConnectedToWiFi()) {
-            debug("Connected");
+
+            //For PreLollipop Devices
             if (buildVersion < 21) {
+
+                // Check if the connected wifi is PU@Campus
                 if (Functions.isPUCampus(context)) {
-                    debug("PUCampus");
+
                     if (Functions.isDisconnectedFlagSet(context)) {
+                        //Begin Login Task
                         new LoginTask(context, true).execute();
                         Functions.setDisconnectedFromPUCampusFlag(context, 0);
                     }
@@ -42,9 +48,16 @@ public class WifiConnectedReceiver extends BroadcastReceiver {
                     Functions.setDisconnectedFromPUCampusFlag(context, 1);
                 }
             } else {
+                // For Lollipop, set default network to wifi
                 ConnectivityManager.setProcessDefaultNetwork(network);
+
+                //Check if connected ssid is PU@Campus
                 if (Functions.isPUCampus(context)) {
+                    //Begin Login Task
                     new LoginTask(context, true).execute();
+                    Functions.setDisconnectedFromPUCampusFlag(context, 0);
+                }else{
+                    Functions.setDisconnectedFromPUCampusFlag(context, 1);
                 }
             }
         } else {
@@ -52,16 +65,14 @@ public class WifiConnectedReceiver extends BroadcastReceiver {
         }
     }
 
-    private void debug(String message) {
-        Log.d("Simar", message);
-    }
-
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private boolean isConnectedToWiFi() {
         if (buildVersion < 21) {
+            // For Pre Lollipop Devices, get active network info and check if it is wifi
             NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
             return (networkInfo != null) && (networkInfo.getType() == ConnectivityManager.TYPE_WIFI) && (networkInfo.getState().equals(NetworkInfo.State.CONNECTED));
         } else {
+            // For Lollipop, get all networks, check if a wifi network is connected
             Network[] networks = connectivityManager.getAllNetworks();
             NetworkInfo networkInfo;
             for (Network network1 : networks) {
