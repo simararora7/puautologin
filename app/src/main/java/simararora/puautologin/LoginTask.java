@@ -32,7 +32,7 @@ public class LoginTask extends AsyncTask<Void, String, Void> {
                     if (Build.VERSION.SDK_INT >= 21)
                         ConnectivityManager.setProcessDefaultNetwork(null);
                     Functions.sendNotification(context, "Not Connected To PU@Campus", false);
-                    this.cancel(true);
+                   this.cancel(true);
                 }
             }else{
 
@@ -48,6 +48,8 @@ public class LoginTask extends AsyncTask<Void, String, Void> {
      * @param params
      * @return result in onPostExecute()
      */
+
+
     @Override
     protected Void doInBackground(Void... params) {
 

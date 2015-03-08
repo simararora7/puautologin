@@ -3,6 +3,7 @@ package simararora.puautologin.widget;
 import android.app.IntentService;
 import android.content.Intent;
 
+import simararora.puautologin.Functions;
 import simararora.puautologin.LogoutTask;
 
 /**

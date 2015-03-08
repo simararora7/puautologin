@@ -157,43 +157,52 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         });
         builder.setView(view);
 
-        //Set Buttons for Dialog
-        builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                String user, pass;
-                user = username.getText().toString();
-                pass = password.getText().toString();
-                if (user.isEmpty()) {
-                    username.setError("Username can't be left empty.");
-                    return;
-                }
-                if (pass.isEmpty()) {
-                    password.setError("Password can't be left empty.");
-                    return;
-                }
-                UserDatabase userDatabase = new UserDatabase(MainActivity.this);
-                userDatabase.open();
-                if (userDatabase.getAllUsers().isEmpty()) {
-                    Functions.initialise(MainActivity.this);
-                    Functions.setActiveUser(MainActivity.this, user);
-                }
-                userDatabase.addUser(user, pass);
-                userDatabase.close();
-                Toast.makeText(MainActivity.this, "User Added Successfully", Toast.LENGTH_SHORT).show();
-                MainActivity.this.onSuccessfulAddUser(user);
-            }
-        });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
+        //Initialise Buttons for Dialog
+        builder.setPositiveButton("Add", null);
+        builder.setNegativeButton("Cancel", null);
 
+        //Create Dialog
+        final AlertDialogPro dialog = builder.create();
+
+        //Set Dialog Animations
+        dialog.getWindow().getAttributes().windowAnimations = R.style.dialog_animation;
+
+        //Overide Button Actions Of Dialog
+        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface d) {
+                Button positiveButton = dialog.getButton(AlertDialogPro.BUTTON_POSITIVE);
+                positiveButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String user, pass;
+                        user = username.getText().toString();
+                        pass = password.getText().toString();
+                        if (user.isEmpty()) {
+                            username.setError("Username can't be left empty.");
+                            return;
+                        }
+                        if (pass.isEmpty()) {
+                            password.setError("Password can't be left empty.");
+                            return;
+                        }
+                        UserDatabase userDatabase = new UserDatabase(MainActivity.this);
+                        userDatabase.open();
+                        if (userDatabase.getAllUsers().isEmpty()) {
+                            Functions.initialise(MainActivity.this);
+                            Functions.setActiveUser(MainActivity.this, user);
+                        }
+                        userDatabase.addUser(user, pass);
+                        userDatabase.close();
+                        Toast.makeText(MainActivity.this, "User Added Successfully", Toast.LENGTH_SHORT).show();
+                        MainActivity.this.onSuccessfulAddUser(user);
+                        dialog.dismiss();
+                    }
+                });
             }
         });
 
         //Show Dialog
-        AlertDialogPro dialog = builder.create();
-        dialog.getWindow().getAttributes().windowAnimations = R.style.dialog_animation;
         dialog.show();
     }
 
@@ -211,7 +220,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
      * @param username Shows options dialog
      *                 Edit
      *                 Delete
-     *                 Change Password
+     *
      */
     private void showOptionsDialog(final String username) {
         View view = getLayoutInflater().inflate(R.layout.dialog_options, null);
@@ -292,32 +301,38 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             }
         });
         builder.setView(view);
-        builder.setPositiveButton("Edit", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                String newUsername = username.getText().toString();
-                if (newUsername.isEmpty()) {
-                    return;
-                }
-                UserDatabase userDatabase = new UserDatabase(MainActivity.this);
-                userDatabase.open();
-                String pwd = password.getText().toString();
-                if (pwd.isEmpty()) {
-                    pwd = userDatabase.getPasswordFromUserName(oldUser);
-                }
-                userDatabase.editUser(oldUser, newUsername, pwd);
-                userDatabase.close();
-                MainActivity.this.onEditUserConformation(oldUser, newUsername);
-            }
-        });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-            }
-        });
+        builder.setPositiveButton("Edit", null);
+        builder.setNegativeButton("Cancel", null);
 
-        AlertDialogPro dialog = builder.create();
+        final AlertDialogPro dialog = builder.create();
         dialog.getWindow().getAttributes().windowAnimations = R.style.dialog_animation;
+
+        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface d) {
+                Button positiveButton = dialog.getButton(AlertDialogPro.BUTTON_POSITIVE);
+                positiveButton.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v) {
+                        String newUsername = username.getText().toString();
+                        if (newUsername.isEmpty()) {
+                            username.setError("Username can't be left empty.");
+                            return;
+                        }
+                        UserDatabase userDatabase = new UserDatabase(MainActivity.this);
+                        userDatabase.open();
+                        String pwd = password.getText().toString();
+                        if (pwd.isEmpty()) {
+                            pwd = userDatabase.getPasswordFromUserName(oldUser);
+                        }
+                        userDatabase.editUser(oldUser, newUsername, pwd);
+                        userDatabase.close();
+                        MainActivity.this.onEditUserConformation(oldUser, newUsername);
+                        dialog.dismiss();
+                    }
+                });
+            }
+        });
         dialog.show();
     }
 
