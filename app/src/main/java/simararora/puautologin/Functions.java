@@ -60,6 +60,7 @@ public class Functions {
 
     /**
      * Retrieve default username from shared preferences
+     *
      * @param context
      * @return default username selected by username
      */
@@ -69,6 +70,7 @@ public class Functions {
 
     /**
      * Set default user in shared preferences
+     *
      * @param context
      * @param userName
      */
@@ -78,6 +80,7 @@ public class Functions {
 
     /**
      * Return password for the username provided
+     *
      * @param context
      * @param userName
      * @return
@@ -92,6 +95,7 @@ public class Functions {
 
     /**
      * Read from shared preferences
+     *
      * @param context
      * @param key
      * @return
@@ -103,6 +107,7 @@ public class Functions {
 
     /**
      * Write To Shared Preferences
+     *
      * @param context
      * @param key
      * @param value
@@ -116,6 +121,7 @@ public class Functions {
 
     /**
      * Check if app is on foreground
+     *
      * @param context
      * @return
      */
@@ -136,6 +142,7 @@ public class Functions {
 
     /**
      * Check if current SSID is PU@Campus
+     *
      * @param context
      * @return
      */
@@ -144,9 +151,12 @@ public class Functions {
         if (wifiManager != null) {
             WifiInfo wifiInfo = wifiManager.getConnectionInfo();
             if (wifiInfo != null) {
-                String ssid = wifiInfo.getSSID().toLowerCase();
-                if (ssid.contains("pu@campus")) {
-                    return true;
+                String ssid = wifiInfo.getSSID();
+                if (ssid != null) {
+                    ssid = ssid.toLowerCase();
+                    if (ssid.contains("pu@campus")) {
+                        return true;
+                    }
                 }
             }
         }
@@ -155,6 +165,7 @@ public class Functions {
 
     /**
      * Send Notification
+     *
      * @param context
      * @param message
      * @param showAction
@@ -168,6 +179,7 @@ public class Functions {
 
     /**
      * Check if Wifi is connected
+     *
      * @param context
      * @return
      */
