@@ -23,6 +23,8 @@ public class Functions {
     private static final String KEY_ACTIVE_USER = "activeUser";
     private static final String PREFERENCES_NAME = "puSharedPreferences";
     private static final String WIFI_KEY = "wifiKey";
+    private static final String KEY_RUN_COUNT = "runCount";
+    private static final String KEY_CAN_RATE = "canRate";
 
     /**
      * Check if user has initialised the app by entering at least one username password pair
@@ -213,5 +215,25 @@ public class Functions {
 
     public static void setDisconnectedFromPUCampusFlag(Context context, int value) {
         writeToSharedPreferences(context, WIFI_KEY, value + "");
+    }
+
+    public static int getRunCount(Context context) {
+        String str = readFromSharedPreferences(context, KEY_RUN_COUNT);
+        if (str.equals(""))
+            return 1;
+        else return Integer.parseInt(str);
+    }
+
+    public static void setRunCount(Context context, int count){
+        writeToSharedPreferences(context, KEY_RUN_COUNT, count + "");
+    }
+
+    public static boolean canShowRateDialog(Context context){
+        String str = readFromSharedPreferences(context, KEY_CAN_RATE);
+        return str.equals("") || Boolean.parseBoolean(str);
+    }
+
+    public static void setCanRateFlag(Context context, boolean canRate){
+        writeToSharedPreferences(context, KEY_CAN_RATE, canRate + "");
     }
 }

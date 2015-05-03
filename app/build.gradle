@@ -5,7 +5,7 @@ android {
         config {
             keyAlias 'puautologin'
             keyPassword 'awesum77'
-            storeFile file('D:/AndroidstudioProjects/KeyStores/puautologin.jks')
+            storeFile file('E:/AndroidstudioProjects/KeyStores/puautologin.jks')
             storePassword 'awesum77'
         }
     }
@@ -13,10 +13,11 @@ android {
     buildToolsVersion "21.1.2"
     defaultConfig {
         applicationId "simararora.puautologin"
-        minSdkVersion 14
+        minSdkVersion 9
         targetSdkVersion 21
-        versionCode 1
-        versionName "1.0"
+        versionCode 4
+        versionName "1.3"
+        signingConfig signingConfigs.config
     }
     buildTypes {
         release {
@@ -24,6 +25,8 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.config
         }
+    }
+    productFlavors {
     }
 }
 

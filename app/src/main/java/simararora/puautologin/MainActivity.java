@@ -35,7 +35,6 @@ import java.util.ArrayList;
 /**
  * Created by Simar Arora on 2/3/2015.
  * This App is Licensed under GNU General Public License. A copy of this license can be found in the root of this project.
- *
  */
 public class MainActivity extends ActionBarActivity implements View.OnClickListener {
 
@@ -94,6 +93,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             }
         });
 
+        //Start Animations
         loginButton.startAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_left));
         loginButton.setVisibility(View.VISIBLE);
 
@@ -104,6 +104,9 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         listViewLayout.startAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_up));
         //listViewLayout.setVisibility(View.VISIBLE);
         addUser.startAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_left));
+
+        //Show rate dialog
+        showRateDialog();
     }
 
     /**
@@ -220,7 +223,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
      * @param username Shows options dialog
      *                 Edit
      *                 Delete
-     *
      */
     private void showOptionsDialog(final String username) {
         View view = getLayoutInflater().inflate(R.layout.dialog_options, null);
@@ -311,7 +313,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             @Override
             public void onShow(DialogInterface d) {
                 Button positiveButton = dialog.getButton(AlertDialogPro.BUTTON_POSITIVE);
-                positiveButton.setOnClickListener(new View.OnClickListener(){
+                positiveButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         String newUsername = username.getText().toString();
@@ -376,6 +378,9 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             case R.id.action_open_portal:
                 openPortal();
                 break;
+            case R.id.action_share:
+                share();
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -386,7 +391,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     private void showAboutDialog() {
         AlertDialogPro.Builder builder = new AlertDialogPro.Builder(this);
         builder.setTitle("About");
-        builder.setMessage("This application is developed by Simarpreet Singh Arora, CSE, 3rd Year, UIET.\n\nIcons and Feature Graphic Designed By Naveen Singh, CSE, 3rd Year, UIET.\n\nOpen Source Libraries Used:\n\tAlertDialogPro\n");
+        builder.setMessage("This application is developed by Simarpreet Singh Arora, CSE, 3rd Year, UIET.\n\nIcons and Feature Graphic Designed By Naveen Singh, CSE, 3rd Year, UIET.\n\nOpen Source Libraries Used:\nAlertDialogPro\n");
         builder.setCancelable(true);
         builder.setPositiveButton("Back", null);
         AlertDialogPro dialog = builder.create();
@@ -419,6 +424,69 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         } catch (ActivityNotFoundException e) {
             Toast.makeText(this, "No Web Browser Found", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void showRateDialog() {
+
+        int runCount = Functions.getRunCount(this);
+        if (!(runCount >= 3 && Functions.canShowRateDialog(this))) {
+            runCount++;
+            Functions.setRunCount(this, runCount);
+            return;
+        }
+
+        AlertDialogPro.Builder builder = new AlertDialogPro.Builder(this);
+        builder.setTitle("Rate This App");
+        builder.setMessage("Like this app? Rate it on Google Play.");
+        builder.setPositiveButton("Rate Now", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Functions.setCanRateFlag(MainActivity.this, false);
+                MainActivity.this.goToPlayStore();
+            }
+        });
+
+        builder.setNeutralButton("Never", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Functions.setCanRateFlag(MainActivity.this, false);
+            }
+        });
+
+        builder.setNegativeButton("Not Now", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+        final AlertDialogPro dialog = builder.create();
+        dialog.getWindow().getAttributes().windowAnimations = R.style.dialog_animation;
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                dialog.show();
+            }
+        }, 2000);
+    }
+
+    private void goToPlayStore() {
+        Uri uri = Uri.parse("market://details?id=" + getPackageName());
+        Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
+        try {
+            startActivity(goToMarket);
+        } catch (ActivityNotFoundException e) {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + getPackageName())));
+        }
+    }
+
+    private void share() {
+        String str = "Take a look at \"PU Auto Login\" - https://play.google.com/store/apps/details?id=simararora.puautologin";
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, str);
+        sendIntent.setType("text/plain");
+        startActivity(sendIntent);
     }
 
     /**

@@ -74,5 +74,8 @@ public class NotificationService extends IntentService{
 
         //First Argument 0 = FLAG_UPDATE
         notificationManager.notify(0, notification);
+
+        //Stop Service
+        this.stopSelf();
     }
 }

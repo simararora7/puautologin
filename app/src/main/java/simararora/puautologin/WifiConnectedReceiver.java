@@ -56,7 +56,7 @@ public class WifiConnectedReceiver extends BroadcastReceiver {
                     //Begin Login Task
                     new LoginTask(context, true).execute();
                     Functions.setDisconnectedFromPUCampusFlag(context, 0);
-                }else{
+                } else {
                     Functions.setDisconnectedFromPUCampusFlag(context, 1);
                 }
             }
@@ -77,7 +77,11 @@ public class WifiConnectedReceiver extends BroadcastReceiver {
             NetworkInfo networkInfo;
             for (Network network1 : networks) {
                 network = network1;
+                if (network == null)
+                    continue;
                 networkInfo = connectivityManager.getNetworkInfo(network);
+                if (networkInfo == null)
+                    continue;
                 if ((networkInfo.getType() == ConnectivityManager.TYPE_WIFI) && (networkInfo.getState().equals(NetworkInfo.State.CONNECTED))) {
                     return true;
                 }
