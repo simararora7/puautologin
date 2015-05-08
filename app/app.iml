@@ -80,6 +80,8 @@
     <orderEntry type="library" exported="" name="alertdialogpro-theme-material-0.2.1" level="project" />
     <orderEntry type="library" exported="" name="support-v4-21.0.3" level="project" />
     <orderEntry type="library" exported="" name="support-annotations-21.0.3" level="project" />
+    <orderEntry type="library" exported="" name="material-1.1.0" level="project" />
+    <orderEntry type="library" exported="" name="cardview-v7-21.0.3" level="project" />
     <orderEntry type="library" exported="" name="alertdialogpro-core-0.2.1" level="project" />
   </component>
 </module>

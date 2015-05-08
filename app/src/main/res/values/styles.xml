@@ -19,4 +19,8 @@
         <item name="android:windowExitAnimation">@anim/slide_down_dialog</item>
     </style>
 
+    <style name="MaterialButton" parent="Material.Drawable.Ripple.Touch">
+        <item name="android:color">@color/primary</item>
+    </style>
+
 </resources>

@@ -1,5 +1,6 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -15,20 +16,22 @@
             android:id="@+id/toolbar"
             layout="@layout/toolbar" />
 
-        <Button
+        <com.rey.material.widget.Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Login"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:background="@drawable/button_theme"
+            android:background="@drawable/button_bg"
+            app:rd_rippleColor="@color/primary_dark"
             android:textColor="@android:color/white"
             android:id="@+id/bLogin"
             android:visibility="gone"
+            style="@style/Material.Drawable.Ripple.Wave.Light"
             />
 
-        <Button
+        <com.rey.material.widget.Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Logout"
@@ -36,9 +39,11 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:textColor="@android:color/white"
-            android:background="@drawable/button_theme"
+            android:background="@drawable/button_bg"
             android:id="@+id/bLogout"
             android:visibility="gone"
+            style="@style/Material.Drawable.Ripple.Wave.Light"
+            app:rd_rippleColor="@color/primary_dark"
             />
 
         <LinearLayout
