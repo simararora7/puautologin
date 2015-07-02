@@ -224,16 +224,16 @@ public class Functions {
         else return Integer.parseInt(str);
     }
 
-    public static void setRunCount(Context context, int count){
+    public static void setRunCount(Context context, int count) {
         writeToSharedPreferences(context, KEY_RUN_COUNT, count + "");
     }
 
-    public static boolean canShowRateDialog(Context context){
+    public static boolean canShowRateDialog(Context context) {
         String str = readFromSharedPreferences(context, KEY_CAN_RATE);
         return str.equals("") || Boolean.parseBoolean(str);
     }
 
-    public static void setCanRateFlag(Context context, boolean canRate){
+    public static void setCanRateFlag(Context context, boolean canRate) {
         writeToSharedPreferences(context, KEY_CAN_RATE, canRate + "");
     }
 }
