@@ -25,6 +25,18 @@ public class Functions {
     private static final String WIFI_KEY = "wifiKey";
     private static final String KEY_RUN_COUNT = "runCount";
     private static final String KEY_CAN_RATE = "canRate";
+    private static final String KEY_TIMESTAMP = "timestamp";
+
+    public static void setTimeStamp(Context context, int timestamp) {
+        writeToSharedPreferences(context, KEY_TIMESTAMP, timestamp + "");
+    }
+
+    public static int getTimeStamp(Context context) {
+        String str = readFromSharedPreferences(context, KEY_TIMESTAMP);
+        if (str.isEmpty())
+            return 0;
+        return Integer.parseInt(str);
+    }
 
     /**
      * Check if user has initialised the app by entering at least one username password pair

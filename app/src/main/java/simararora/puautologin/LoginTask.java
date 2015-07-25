@@ -17,7 +17,6 @@ import java.net.URL;
 /**
  * Created by Simar Arora on 2/3/2015.
  * This App is Licensed under GNU General Public License. A copy of this license can be found in the root of this project.
- *
  */
 public class LoginTask extends AsyncTask<Void, String, Void> {
 
@@ -26,15 +25,15 @@ public class LoginTask extends AsyncTask<Void, String, Void> {
 
     public LoginTask(Context context, boolean fromBroadcastReceiver) {
         this.context = context;
-        if(!fromBroadcastReceiver){
-            if(Functions.isConnectedToWifi(context)){
-                if(!Functions.isPUCampus(context)){
+        if (!fromBroadcastReceiver) {
+            if (Functions.isConnectedToWifi(context)) {
+                if (!Functions.isPUCampus(context)) {
                     if (Build.VERSION.SDK_INT >= 21)
                         ConnectivityManager.setProcessDefaultNetwork(null);
                     Functions.sendNotification(context, "Not Connected To PU@Campus", false);
-                   this.cancel(true);
+                    this.cancel(true);
                 }
-            }else{
+            } else {
 
                 Functions.sendNotification(context, "Not Connected To Wifi", false);
                 this.cancel(true);
@@ -45,6 +44,7 @@ public class LoginTask extends AsyncTask<Void, String, Void> {
 
     /**
      * Performed on background thread
+     *
      * @param params
      * @return result in onPostExecute()
      */
@@ -52,6 +52,15 @@ public class LoginTask extends AsyncTask<Void, String, Void> {
 
     @Override
     protected Void doInBackground(Void... params) {
+
+        int oldTimeStamp = Functions.getTimeStamp(context);
+        int newTimeStamp = (int) (System.currentTimeMillis() / 1000L);
+
+        if (newTimeStamp - oldTimeStamp > 10) {
+            Functions.setTimeStamp(context, newTimeStamp);
+        } else {
+            return null;
+        }
 
         //Get Active Username and Password
         String userName = Functions.getActiveUserName(context);
@@ -135,6 +144,7 @@ public class LoginTask extends AsyncTask<Void, String, Void> {
 
     /**
      * Publish Progress
+     *
      * @param values
      */
     @Override
