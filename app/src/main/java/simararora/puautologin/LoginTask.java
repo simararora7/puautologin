@@ -21,7 +21,7 @@ import java.net.URL;
 public class LoginTask extends AsyncTask<Void, String, Void> {
 
     private Context context;
-    private static final String loginURL = "https://securelogin.arubanetworks.com/cgi-bin/login?cmd=login";
+    private static final String loginURL = "https://securelogin.pu.ac.in/cgi-bin/login?cmd=login";
 
     public LoginTask(Context context, boolean fromBroadcastReceiver) {
         this.context = context;
