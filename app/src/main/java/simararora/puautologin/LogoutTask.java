@@ -19,7 +19,7 @@ import java.net.URL;
 public class LogoutTask extends AsyncTask<Void, String, Void> {
 
     private Context context;
-    private static final String logoutURL = "https://securelogin.arubanetworks.com/cgi-bin/login?cmd=logout";
+    private static final String logoutURL = "https://securelogin.pu.ac.in/cgi-bin/login?cmd=logout";
 
     public LogoutTask(Context context) {
         this.context = context;
