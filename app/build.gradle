@@ -9,12 +9,12 @@ android {
             storePassword 'awesum77'
         }
     }
-    compileSdkVersion 21
+    compileSdkVersion 24
     buildToolsVersion "21.1.2"
     defaultConfig {
         applicationId "simararora.puautologin"
         minSdkVersion 9
-        targetSdkVersion 21
+        targetSdkVersion 24
         versionCode 10
         versionName "2.1"
         signingConfig signingConfigs.config
@@ -32,9 +32,9 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:21.0.3'
-    compile 'com.github.fengdai:alertdialogpro-theme-material:0.2.1'
+    compile 'com.android.support:appcompat-v7:24.2.1'
+    compile 'com.github.fengdai:alertdialogpro-theme-material:0.2.6'
     compile 'com.github.rey5137:material:1.1.0'
-    compile 'com.android.support:appcompat-v7:21.0.2'
-    compile 'com.android.support:cardview-v7:21.0.3'
+    compile 'com.android.support:appcompat-v7:24.2.1'
+    compile 'com.android.support:cardview-v7:24.2.1'
 }
