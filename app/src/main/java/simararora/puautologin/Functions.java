@@ -20,6 +20,7 @@ import java.util.List;
 public class Functions {
 
     private static final String KEY_INITIALISE = "initialBit";
+    private static final String KEY_AUTO_LOGIN = "autoLogin";
     private static final String KEY_ACTIVE_USER = "activeUser";
     private static final String PREFERENCES_NAME = "puSharedPreferences";
     private static final String WIFI_KEY = "wifiKey";
@@ -27,11 +28,11 @@ public class Functions {
     private static final String KEY_CAN_RATE = "canRate";
     private static final String KEY_TIMESTAMP = "timestamp";
 
-    public static void setTimeStamp(Context context, int timestamp) {
+    static void setTimeStamp(Context context, int timestamp) {
         writeToSharedPreferences(context, KEY_TIMESTAMP, timestamp + "");
     }
 
-    public static int getTimeStamp(Context context) {
+    static int getTimeStamp(Context context) {
         String str = readFromSharedPreferences(context, KEY_TIMESTAMP);
         if (str.isEmpty())
             return 0;
@@ -59,7 +60,7 @@ public class Functions {
      *
      * @param context
      */
-    public static void initialise(Context context) {
+    static void initialise(Context context) {
         writeToSharedPreferences(context, KEY_INITIALISE, 1 + "");
     }
 
@@ -68,7 +69,7 @@ public class Functions {
      *
      * @param context
      */
-    public static void disable(Context context) {
+    static void disable(Context context) {
         writeToSharedPreferences(context, KEY_INITIALISE, 0 + "");
     }
 
@@ -78,7 +79,7 @@ public class Functions {
      * @param context
      * @return default username selected by username
      */
-    public static String getActiveUserName(Context context) {
+    static String getActiveUserName(Context context) {
         return readFromSharedPreferences(context, KEY_ACTIVE_USER);
     }
 
@@ -88,7 +89,7 @@ public class Functions {
      * @param context
      * @param userName
      */
-    public static void setActiveUser(Context context, String userName) {
+    static void setActiveUser(Context context, String userName) {
         writeToSharedPreferences(context, KEY_ACTIVE_USER, userName);
     }
 
@@ -99,7 +100,7 @@ public class Functions {
      * @param userName
      * @return
      */
-    public static String getPasswordForUserName(Context context, String userName) {
+    static String getPasswordForUserName(Context context, String userName) {
         UserDatabase userDatabase = new UserDatabase(context);
         userDatabase.open();
         String password = userDatabase.getPasswordFromUserName(userName);
@@ -160,7 +161,7 @@ public class Functions {
      * @param context
      * @return
      */
-    public static boolean isPUCampus(Context context) {
+    static boolean isPUCampus(Context context) {
         WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
         if (wifiManager != null) {
             WifiInfo wifiInfo = wifiManager.getConnectionInfo();
@@ -184,7 +185,7 @@ public class Functions {
      * @param message
      * @param showAction
      */
-    public static void sendNotification(Context context, String message, boolean showAction) {
+    static void sendNotification(Context context, String message, boolean showAction) {
         Intent intent = new Intent(context, NotificationService.class);
         intent.putExtra("message", message);
         intent.putExtra("showAction", showAction);
@@ -197,7 +198,7 @@ public class Functions {
      * @param context
      * @return
      */
-    public static boolean isConnectedToWifi(Context context) {
+    static boolean isConnectedToWifi(Context context) {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (Build.VERSION.SDK_INT >= 21) {
             Network[] networks = connectivityManager.getAllNetworks();
@@ -217,7 +218,7 @@ public class Functions {
         }
     }
 
-    public static boolean isDisconnectedFlagSet(Context context) {
+    static boolean isDisconnectedFlagSet(Context context) {
         String str = readFromSharedPreferences(context, WIFI_KEY);
         if (str.equals(""))
             return true;
@@ -225,27 +226,36 @@ public class Functions {
         return x == 1;
     }
 
-    public static void setDisconnectedFromPUCampusFlag(Context context, int value) {
+    static void setDisconnectedFromPUCampusFlag(Context context, int value) {
         writeToSharedPreferences(context, WIFI_KEY, value + "");
     }
 
-    public static int getRunCount(Context context) {
+    static int getRunCount(Context context) {
         String str = readFromSharedPreferences(context, KEY_RUN_COUNT);
         if (str.equals(""))
             return 1;
         else return Integer.parseInt(str);
     }
 
-    public static void setRunCount(Context context, int count) {
+    static void setRunCount(Context context, int count) {
         writeToSharedPreferences(context, KEY_RUN_COUNT, count + "");
     }
 
-    public static boolean canShowRateDialog(Context context) {
+    static boolean canShowRateDialog(Context context) {
         String str = readFromSharedPreferences(context, KEY_CAN_RATE);
         return str.equals("") || Boolean.parseBoolean(str);
     }
 
-    public static void setCanRateFlag(Context context, boolean canRate) {
+    static void setCanRateFlag(Context context, boolean canRate) {
         writeToSharedPreferences(context, KEY_CAN_RATE, canRate + "");
+    }
+
+    static boolean isAutoLoginEnabled(Context context) {
+        String str = readFromSharedPreferences(context, KEY_AUTO_LOGIN);
+        return str.equals(BuildConfig.FLAVOR) || Boolean.parseBoolean(str);
+    }
+
+    public static void setAutoLoginEnabled(Context context, boolean checked) {
+        writeToSharedPreferences(context, KEY_AUTO_LOGIN, checked + BuildConfig.FLAVOR);
     }
 }

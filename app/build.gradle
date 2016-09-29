@@ -5,7 +5,7 @@ android {
         config {
             keyAlias 'puautologin'
             keyPassword 'awesum77'
-            storeFile file('E:/AndroidstudioProjects/KeyStores/puautologin.jks')
+            storeFile file('/Users/simar/Workspace/puautologin.jks')
             storePassword 'awesum77'
         }
     }
@@ -15,8 +15,8 @@ android {
         applicationId "simararora.puautologin"
         minSdkVersion 9
         targetSdkVersion 21
-        versionCode 5
-        versionName "1.4"
+        versionCode 10
+        versionName "2.1"
         signingConfig signingConfigs.config
     }
     buildTypes {

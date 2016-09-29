@@ -22,46 +22,25 @@ public class WifiConnectedReceiver extends BroadcastReceiver {
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onReceive(Context context, Intent intent) {
-
-        // Check if user has set up the app, else return
-        if (!Functions.isInitialised(context))
-            return;
-
-        connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        buildVersion = Build.VERSION.SDK_INT;
-
-        //Check if the state chang in wifi is that wifi has been connected
-        if (isConnectedToWiFi()) {
-
-            //For PreLollipop Devices
-            if (buildVersion < 21) {
-
-                // Check if the connected wifi is PU@Campus
+        if (Functions.isInitialised(context) && Functions.isAutoLoginEnabled(context)) {
+            connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            buildVersion = Build.VERSION.SDK_INT;
+            if (!isConnectedToWiFi()) {
+                Functions.setDisconnectedFromPUCampusFlag(context, 1);
+            } else if (this.buildVersion >= 21) {
+                ConnectivityManager.setProcessDefaultNetwork(this.network);
                 if (Functions.isPUCampus(context)) {
-
-                    if (Functions.isDisconnectedFlagSet(context)) {
-                        //Begin Login Task
-                        new LoginTask(context, true).execute();
-                        Functions.setDisconnectedFromPUCampusFlag(context, 0);
-                    }
-                } else {
-                    Functions.setDisconnectedFromPUCampusFlag(context, 1);
-                }
-            } else {
-                // For Lollipop, set default network to wifi
-                ConnectivityManager.setProcessDefaultNetwork(network);
-
-                //Check if connected ssid is PU@Campus
-                if (Functions.isPUCampus(context)) {
-                    //Begin Login Task
                     new LoginTask(context, true).execute();
                     Functions.setDisconnectedFromPUCampusFlag(context, 0);
-                } else {
-                    Functions.setDisconnectedFromPUCampusFlag(context, 1);
+                    return;
                 }
+                Functions.setDisconnectedFromPUCampusFlag(context, 1);
+            } else if (!Functions.isPUCampus(context)) {
+                Functions.setDisconnectedFromPUCampusFlag(context, 1);
+            } else if (Functions.isDisconnectedFlagSet(context)) {
+                new LoginTask(context, true).execute();
+                Functions.setDisconnectedFromPUCampusFlag(context, 0);
             }
-        } else {
-            Functions.setDisconnectedFromPUCampusFlag(context, 1);
         }
     }
 

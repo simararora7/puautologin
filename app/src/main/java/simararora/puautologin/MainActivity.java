@@ -359,6 +359,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        menu.findItem(R.id.action_toggle_auto_login).setChecked(Functions.isAutoLoginEnabled(this));
         return true;
     }
 
@@ -369,6 +370,10 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.action_toggle_auto_login:
+                item.setChecked(!item.isChecked());
+                Functions.setAutoLoginEnabled(this, item.isChecked());
+                break;
             case R.id.action_about:
                 showAboutDialog();
                 break;

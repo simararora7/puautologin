@@ -12,7 +12,7 @@ import java.util.ArrayList;
  * Created by Simar Arora on 2/4/2015.
  * This App is Licensed under GNU General Public License. A copy of this license can be found in the root of this project.
  */
-public class UserDatabase {
+class UserDatabase {
 
     //Table Columns
     private static final String KEY_USER_NAME = "userName";
@@ -29,13 +29,13 @@ public class UserDatabase {
     private UserDatabaseHelper databaseHelper;
     private SQLiteDatabase database;
 
-    public UserDatabase(Context context) {
+    UserDatabase(Context context) {
         this.context = context;
     }
 
     private class UserDatabaseHelper extends SQLiteOpenHelper {
 
-        public UserDatabaseHelper(Context context) {
+        UserDatabaseHelper(Context context) {
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
         }
 
@@ -56,7 +56,7 @@ public class UserDatabase {
     /*
      * Open Database
      */
-    public UserDatabase open() {
+    UserDatabase open() {
         databaseHelper = new UserDatabaseHelper(context);
         database = databaseHelper.getWritableDatabase();
         return this;
@@ -65,16 +65,17 @@ public class UserDatabase {
     /*
      * Close Database
      */
-    public void close() {
+    void close() {
         databaseHelper.close();
     }
 
     /**
      * Add a user to databse
+     *
      * @param userName
      * @param password
      */
-    public void addUser(String userName, String password) {
+    void addUser(String userName, String password) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(KEY_USER_NAME, userName);
         contentValues.put(KEY_PASSWORD, password);
@@ -83,54 +84,62 @@ public class UserDatabase {
 
     /**
      * Delete user from database
+     *
      * @param userName the username to be deleted
      */
-    public void deleteUser(String userName) {
+    void deleteUser(String userName) {
         userName = "'" + userName + "'";
         database.delete(TABLE_NAME, KEY_USER_NAME + " = " + userName, null);
     }
 
     /**
      * Edit a user i database
+     *
      * @param oldUSerName
      * @param newUserName
      * @param newPassword
      */
-    public void editUser(String oldUSerName, String newUserName, String newPassword) {
+    void editUser(String oldUSerName, String newUserName, String newPassword) {
         deleteUser(oldUSerName);
         addUser(newUserName, newPassword);
     }
 
     /**
      * Get password for the username specified
+     *
      * @param userName
      * @return password for username specified
      */
-    public String getPasswordFromUserName(String userName) {
+    String getPasswordFromUserName(String userName) {
         String[] columns = {KEY_USER_NAME, KEY_PASSWORD};
         Cursor cursor = database.query(TABLE_NAME, columns, null, null, null, null, null);
         int indexOfUserName, indexOfPassword;
         indexOfUserName = cursor.getColumnIndex(KEY_USER_NAME);
         indexOfPassword = cursor.getColumnIndex(KEY_PASSWORD);
-        for(cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()){
-           if(cursor.getString(indexOfUserName).equals(userName))
-               return cursor.getString(indexOfPassword);
+        for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+            if (cursor.getString(indexOfUserName).equals(userName)) {
+                String pass = cursor.getString(indexOfPassword);
+                cursor.close();
+                return pass;
+            }
         }
         return null;
     }
 
     /**
      * Get all users
+     *
      * @return ArrayList<String> of all users
      */
-    public ArrayList<String> getAllUsers() {
+    ArrayList<String> getAllUsers() {
         String[] columns = {KEY_USER_NAME};
         Cursor cursor = database.query(TABLE_NAME, columns, null, null, null, null, null);
         int indexOfUserName = cursor.getColumnIndex(KEY_USER_NAME);
         ArrayList<String> users = new ArrayList<>();
-        for(cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()){
+        for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
             users.add(cursor.getString(indexOfUserName));
         }
+        cursor.close();
         return users;
     }
 }
