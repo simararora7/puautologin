@@ -423,7 +423,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
      * Opens Browser for option portal site
      */
     private void openPortal() {
-        Uri uri = Uri.parse("https://securelogin.arubanetworks.com/cgi-bin/login?cmd=login");
+        Uri uri = Uri.parse("https://securelogin.pu.ac.in/cgi-bin/login?cmd=login");
         try {
             startActivity(new Intent(Intent.ACTION_VIEW, uri));
         } catch (ActivityNotFoundException e) {
