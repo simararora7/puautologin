@@ -1,0 +1,8 @@
+title: PU Auto Login
+description: Automatically Log In To PU@Campus
+google_analytics: 
+show_downloads: true
+theme: jekyll-theme-minimal
+
+gems:
+  - jekyll-mentions
