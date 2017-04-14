@@ -8,7 +8,7 @@ This application is licensed under the GNU General Public License.
 
 A copy of the afore mentioned license can be found at <a>http://www.gnu.org/licenses/gpl.txt</a>
 
-###Contributors
+### Contributors
 
 App Icon designed by Naveen Singh, 3rd Year, UIET.
 
